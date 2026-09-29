@@ -1,0 +1,606 @@
+{
+ "efectos": {
+  "click": [
+   "random/click.ogg"
+  ],
+  "pickup": [
+   "random/pop.ogg"
+  ],
+  "xp": [
+   "random/orb.ogg"
+  ],
+  "levelup": [
+   "random/levelup.ogg"
+  ],
+  "pling": [
+   "note/pling.ogg"
+  ],
+  "note": [
+   "note/harp.ogg"
+  ],
+  "tick": [
+   "note/hat.ogg"
+  ],
+  "anvil": [
+   "random/anvil_use.ogg"
+  ],
+  "bell": [
+   "block/bell/bell_use01.ogg"
+  ],
+  "chestOpen": [
+   "block/chest/open.ogg"
+  ],
+  "chestClose": [
+   "block/chest/close1.ogg",
+   "block/chest/close2.ogg",
+   "block/chest/close3.ogg"
+  ],
+  "whoosh": [
+   "ui/toast/in.ogg"
+  ],
+  "coin": [
+   "note/bell.ogg"
+  ],
+  "chime": [
+   "note/icechime.ogg"
+  ],
+  "win": [
+   "ui/toast/challenge_complete.ogg"
+  ],
+  "firework": [
+   "fireworks/blast1.ogg",
+   "fireworks/largeblast1.ogg",
+   "fireworks/twinkle1.ogg"
+  ],
+  "wood": [
+   "dig/wood1.ogg",
+   "dig/wood2.ogg",
+   "dig/wood3.ogg"
+  ],
+  "stone": [
+   "dig/stone1.ogg",
+   "dig/stone2.ogg",
+   "dig/stone3.ogg"
+  ],
+  "pick": [
+   "dig/stone1.ogg",
+   "dig/stone2.ogg",
+   "dig/stone3.ogg"
+  ],
+  "grass": [
+   "dig/grass1.ogg",
+   "dig/grass2.ogg",
+   "dig/grass3.ogg"
+  ],
+  "sand": [
+   "dig/sand1.ogg",
+   "dig/sand2.ogg",
+   "dig/sand3.ogg"
+  ],
+  "gravel": [
+   "dig/gravel1.ogg",
+   "dig/gravel2.ogg",
+   "dig/gravel3.ogg"
+  ],
+  "snow": [
+   "dig/snow1.ogg",
+   "dig/snow2.ogg",
+   "dig/snow3.ogg"
+  ],
+  "glass": [
+   "random/glass1.ogg",
+   "random/glass2.ogg",
+   "random/glass3.ogg"
+  ],
+  "fizz": [
+   "random/fizz.ogg"
+  ],
+  "splash": [
+   "liquid/splash.ogg",
+   "liquid/splash2.ogg"
+  ],
+  "lava": [
+   "liquid/lavapop.ogg",
+   "liquid/lava.ogg"
+  ],
+  "piston": [
+   "tile/piston/out.ogg",
+   "tile/piston/in.ogg"
+  ],
+  "minecart": [
+   "minecart/base.ogg"
+  ],
+  "book": [
+   "item/book/open_flip1.ogg",
+   "item/book/open_flip2.ogg",
+   "item/book/open_flip3.ogg"
+  ],
+  "portal": [
+   "portal/trigger.ogg"
+  ],
+  "magic": [
+   "block/enchantment_table/enchant1.ogg",
+   "block/enchantment_table/enchant2.ogg",
+   "block/enchantment_table/enchant3.ogg"
+  ],
+  "amethyst": [
+   "block/amethyst/resonate1.ogg",
+   "block/amethyst/resonate2.ogg",
+   "block/amethyst/resonate3.ogg"
+  ],
+  "sparkle": [
+   "block/amethyst/shimmer.ogg"
+  ],
+  "ice": [
+   "note/icechime.ogg"
+  ],
+  "petals": [
+   "block/cherry_leaves/break1.ogg",
+   "block/cherry_leaves/break2.ogg",
+   "block/cherry_leaves/break3.ogg"
+  ],
+  "fungus": [
+   "block/fungus/break1.ogg",
+   "block/fungus/break2.ogg",
+   "block/fungus/break3.ogg"
+  ],
+  "copper": [
+   "block/copper/break1.ogg",
+   "block/copper/break2.ogg",
+   "block/copper/break3.ogg"
+  ],
+  "woodCut": [
+   "block/bamboo_wood/break1.ogg",
+   "block/bamboo_wood/break2.ogg",
+   "block/bamboo_wood/break3.ogg"
+  ],
+  "sculk": [
+   "block/sculk/break1.ogg",
+   "block/sculk/break2.ogg",
+   "block/sculk/break3.ogg"
+  ],
+  "creak": [
+   "ambient/nether/warped_forest/creak1.ogg",
+   "ambient/nether/warped_forest/creak2.ogg",
+   "ambient/nether/warped_forest/creak3.ogg"
+  ],
+  "wind": [
+   "ambient/nether/soulsand_valley/whisper1.ogg"
+  ],
+  "drip": [
+   "block/pointed_dripstone/drip_water1.ogg",
+   "block/pointed_dripstone/drip_water2.ogg",
+   "block/pointed_dripstone/drip_water3.ogg"
+  ],
+  "bubble": [
+   "ambient/underwater/additions/bubbles1.ogg",
+   "ambient/underwater/additions/bubbles2.ogg",
+   "ambient/underwater/additions/bubbles3.ogg"
+  ],
+  "cave": [
+   "ambient/cave/cave1.ogg",
+   "ambient/cave/cave2.ogg",
+   "ambient/cave/cave3.ogg"
+  ],
+  "heartbeat": [
+   "mob/warden/heartbeat_1.ogg",
+   "mob/warden/heartbeat_2.ogg"
+  ],
+  "villager": [
+   "mob/villager/idle1.ogg",
+   "mob/villager/idle2.ogg",
+   "mob/villager/idle3.ogg"
+  ],
+  "pig": [
+   "mob/pig/say1.ogg",
+   "mob/pig/say2.ogg",
+   "mob/pig/say3.ogg"
+  ],
+  "cow": [
+   "mob/cow/say1.ogg",
+   "mob/cow/say2.ogg",
+   "mob/cow/say3.ogg"
+  ],
+  "chicken": [
+   "mob/chicken/say1.ogg",
+   "mob/chicken/say2.ogg",
+   "mob/chicken/say3.ogg"
+  ],
+  "horse": [
+   "mob/horse/idle1.ogg",
+   "mob/horse/idle2.ogg",
+   "mob/horse/idle3.ogg"
+  ],
+  "wolf": [
+   "mob/wolf/classic/bark1.ogg",
+   "mob/wolf/classic/bark2.ogg",
+   "mob/wolf/classic/bark3.ogg"
+  ],
+  "ocelot": [
+   "mob/cat/ocelot/idle1.ogg",
+   "mob/cat/ocelot/idle2.ogg",
+   "mob/cat/ocelot/idle3.ogg"
+  ],
+  "parrot": [
+   "mob/parrot/idle1.ogg",
+   "mob/parrot/idle2.ogg",
+   "mob/parrot/idle3.ogg"
+  ],
+  "dolphin": [
+   "mob/dolphin/idle1.ogg",
+   "mob/dolphin/idle2.ogg",
+   "mob/dolphin/idle3.ogg"
+  ],
+  "panda": [
+   "mob/panda/idle1.ogg",
+   "mob/panda/idle2.ogg",
+   "mob/panda/idle3.ogg"
+  ],
+  "frog": [
+   "mob/frog/idle1.ogg",
+   "mob/frog/idle2.ogg",
+   "mob/frog/idle3.ogg"
+  ],
+  "husk": [
+   "mob/husk/idle1.ogg",
+   "mob/husk/idle2.ogg",
+   "mob/husk/idle3.ogg"
+  ],
+  "creeper": [
+   "mob/creeper/say1.ogg",
+   "mob/creeper/say2.ogg",
+   "mob/creeper/say3.ogg"
+  ],
+  "enderman": [
+   "mob/endermen/idle1.ogg",
+   "mob/endermen/idle2.ogg",
+   "mob/endermen/idle3.ogg"
+  ],
+  "ghast": [
+   "mob/ghast/moan1.ogg",
+   "mob/ghast/moan2.ogg",
+   "mob/ghast/moan3.ogg"
+  ],
+  "bee": [
+   "mob/bee/loop1.ogg",
+   "mob/bee/loop2.ogg",
+   "mob/bee/loop3.ogg"
+  ],
+  "b_wood": [
+   "dig/wood1.ogg",
+   "dig/wood2.ogg",
+   "dig/wood3.ogg"
+  ],
+  "p_wood": [
+   "dig/wood1.ogg",
+   "dig/wood2.ogg",
+   "dig/wood3.ogg"
+  ],
+  "b_stone": [
+   "dig/stone1.ogg",
+   "dig/stone2.ogg",
+   "dig/stone3.ogg"
+  ],
+  "p_stone": [
+   "dig/stone1.ogg",
+   "dig/stone2.ogg",
+   "dig/stone3.ogg"
+  ],
+  "b_grass": [
+   "dig/grass1.ogg",
+   "dig/grass2.ogg",
+   "dig/grass3.ogg"
+  ],
+  "p_grass": [
+   "dig/grass1.ogg",
+   "dig/grass2.ogg",
+   "dig/grass3.ogg"
+  ],
+  "b_sand": [
+   "dig/sand1.ogg",
+   "dig/sand2.ogg",
+   "dig/sand3.ogg"
+  ],
+  "p_sand": [
+   "dig/sand1.ogg",
+   "dig/sand2.ogg",
+   "dig/sand3.ogg"
+  ],
+  "b_gravel": [
+   "dig/gravel1.ogg",
+   "dig/gravel2.ogg",
+   "dig/gravel3.ogg"
+  ],
+  "p_gravel": [
+   "dig/gravel1.ogg",
+   "dig/gravel2.ogg",
+   "dig/gravel3.ogg"
+  ],
+  "b_snow": [
+   "dig/snow1.ogg",
+   "dig/snow2.ogg",
+   "dig/snow3.ogg"
+  ],
+  "p_snow": [
+   "dig/snow1.ogg",
+   "dig/snow2.ogg",
+   "dig/snow3.ogg"
+  ],
+  "b_cloth": [
+   "dig/cloth1.ogg",
+   "dig/cloth2.ogg",
+   "dig/cloth3.ogg"
+  ],
+  "p_cloth": [
+   "dig/cloth1.ogg",
+   "dig/cloth2.ogg",
+   "dig/cloth3.ogg"
+  ],
+  "b_coral": [
+   "dig/coral1.ogg",
+   "dig/coral2.ogg",
+   "dig/coral3.ogg"
+  ],
+  "p_coral": [
+   "dig/coral1.ogg",
+   "dig/coral2.ogg",
+   "dig/coral3.ogg"
+  ],
+  "b_cherry": [
+   "block/cherry_wood/break1.ogg",
+   "block/cherry_wood/break2.ogg",
+   "block/cherry_wood/break3.ogg"
+  ],
+  "p_cherry": [
+   "block/cherry_wood/break1.ogg",
+   "block/cherry_wood/break2.ogg",
+   "block/cherry_wood/break3.ogg"
+  ],
+  "b_netherrack": [
+   "block/netherrack/break1.ogg",
+   "block/netherrack/break2.ogg",
+   "block/netherrack/break3.ogg"
+  ],
+  "p_netherrack": [
+   "block/netherrack/break1.ogg",
+   "block/netherrack/break2.ogg",
+   "block/netherrack/break3.ogg"
+  ],
+  "b_sculk": [
+   "block/sculk/break1.ogg",
+   "block/sculk/break2.ogg",
+   "block/sculk/break3.ogg"
+  ],
+  "p_sculk": [
+   "block/sculk/break1.ogg",
+   "block/sculk/break2.ogg",
+   "block/sculk/break3.ogg"
+  ],
+  "b_amethyst": [
+   "block/amethyst_cluster/break1.ogg",
+   "block/amethyst_cluster/break2.ogg",
+   "block/amethyst_cluster/break3.ogg"
+  ],
+  "p_amethyst": [
+   "block/amethyst_cluster/place1.ogg",
+   "block/amethyst_cluster/place2.ogg",
+   "block/amethyst_cluster/place3.ogg"
+  ],
+  "b_copper": [
+   "block/copper/break1.ogg",
+   "block/copper/break2.ogg",
+   "block/copper/break3.ogg"
+  ],
+  "p_copper": [
+   "block/copper/break1.ogg",
+   "block/copper/break2.ogg",
+   "block/copper/break3.ogg"
+  ],
+  "b_iron": [
+   "block/iron/break1.ogg",
+   "block/iron/break2.ogg",
+   "block/iron/break3.ogg"
+  ],
+  "p_iron": [
+   "block/iron/break1.ogg",
+   "block/iron/break2.ogg",
+   "block/iron/break3.ogg"
+  ],
+  "b_dripstone": [
+   "block/dripstone/break1.ogg",
+   "block/dripstone/break2.ogg",
+   "block/dripstone/break3.ogg"
+  ],
+  "p_dripstone": [
+   "block/dripstone/break1.ogg",
+   "block/dripstone/break2.ogg",
+   "block/dripstone/break3.ogg"
+  ],
+  "b_mud": [
+   "block/mud/break1.ogg",
+   "block/mud/break2.ogg",
+   "block/mud/break3.ogg"
+  ],
+  "p_mud": [
+   "block/mud/break1.ogg",
+   "block/mud/break2.ogg",
+   "block/mud/break3.ogg"
+  ],
+  "b_bamboo": [
+   "block/bamboo_wood/break1.ogg",
+   "block/bamboo_wood/break2.ogg",
+   "block/bamboo_wood/break3.ogg"
+  ],
+  "p_bamboo": [
+   "block/bamboo/place1.ogg",
+   "block/bamboo/place2.ogg",
+   "block/bamboo/place3.ogg"
+  ],
+  "b_shelf": [
+   "block/chiseled_bookshelf/break1.ogg",
+   "block/chiseled_bookshelf/break2.ogg",
+   "block/chiseled_bookshelf/break3.ogg"
+  ],
+  "p_shelf": [
+   "block/chiseled_bookshelf/insert1.ogg",
+   "block/chiseled_bookshelf/insert2.ogg",
+   "block/chiseled_bookshelf/insert3.ogg"
+  ],
+  "b_honey": [
+   "block/honeyblock/break1.ogg",
+   "block/honeyblock/break2.ogg",
+   "block/honeyblock/break3.ogg"
+  ],
+  "p_honey": [
+   "block/honeyblock/break1.ogg",
+   "block/honeyblock/break2.ogg",
+   "block/honeyblock/break3.ogg"
+  ],
+  "b_deepslate": [
+   "block/deepslate/break1.ogg",
+   "block/deepslate/break2.ogg",
+   "block/deepslate/break3.ogg"
+  ],
+  "p_deepslate": [
+   "block/deepslate/place1.ogg",
+   "block/deepslate/place2.ogg",
+   "block/deepslate/place3.ogg"
+  ],
+  "b_leaflitter": [
+   "block/leaf_litter/break1.ogg",
+   "block/leaf_litter/break2.ogg",
+   "block/leaf_litter/break3.ogg"
+  ],
+  "p_leaflitter": [
+   "block/leaf_litter/place1.ogg",
+   "block/leaf_litter/place2.ogg",
+   "block/leaf_litter/place3.ogg"
+  ],
+  "b_sulfur": [
+   "block/sulfur/break1.ogg",
+   "block/sulfur/break2.ogg",
+   "block/sulfur/break3.ogg"
+  ],
+  "p_sulfur": [
+   "block/sulfur/break1.ogg",
+   "block/sulfur/break2.ogg",
+   "block/sulfur/break3.ogg"
+  ],
+  "b_nylium": [
+   "block/nylium/break1.ogg",
+   "block/nylium/break2.ogg",
+   "block/nylium/break3.ogg"
+  ],
+  "p_nylium": [
+   "block/nylium/break1.ogg",
+   "block/nylium/break2.ogg",
+   "block/nylium/break3.ogg"
+  ],
+  "b_soulsand": [
+   "block/soul_sand/break1.ogg",
+   "block/soul_sand/break2.ogg",
+   "block/soul_sand/break3.ogg"
+  ],
+  "p_soulsand": [
+   "block/soul_sand/break1.ogg",
+   "block/soul_sand/break2.ogg",
+   "block/soul_sand/break3.ogg"
+  ],
+  "b_basalt": [
+   "block/basalt/break1.ogg",
+   "block/basalt/break2.ogg",
+   "block/basalt/break3.ogg"
+  ],
+  "p_basalt": [
+   "block/basalt/break1.ogg",
+   "block/basalt/break2.ogg",
+   "block/basalt/break3.ogg"
+  ],
+  "b_moss": [
+   "block/moss/break1.ogg",
+   "block/moss/break2.ogg",
+   "block/moss/break3.ogg"
+  ],
+  "p_moss": [
+   "block/moss/break1.ogg",
+   "block/moss/break2.ogg",
+   "block/moss/break3.ogg"
+  ],
+  "b_fungus": [
+   "block/fungus/break1.ogg",
+   "block/fungus/break2.ogg",
+   "block/fungus/break3.ogg"
+  ],
+  "p_fungus": [
+   "block/fungus/break1.ogg",
+   "block/fungus/break2.ogg",
+   "block/fungus/break3.ogg"
+  ],
+  "b_powder": [
+   "block/powder_snow/break1.ogg",
+   "block/powder_snow/break2.ogg",
+   "block/powder_snow/break3.ogg"
+  ],
+  "p_powder": [
+   "block/powder_snow/break1.ogg",
+   "block/powder_snow/break2.ogg",
+   "block/powder_snow/break3.ogg"
+  ],
+  "b_calcite": [
+   "block/calcite/break1.ogg",
+   "block/calcite/break2.ogg",
+   "block/calcite/break3.ogg"
+  ],
+  "p_calcite": [
+   "block/calcite/place1.ogg",
+   "block/calcite/place2.ogg",
+   "block/calcite/place3.ogg"
+  ]
+ },
+ "ambientes": {
+  "Nether": [
+   "ambient/nether/nether_wastes/ambience.ogg"
+  ],
+  "Deltas de basalto": [
+   "ambient/nether/basalt_deltas/ambience.ogg"
+  ],
+  "Valle de almas": [
+   "ambient/nether/soulsand_valley/ambience.ogg"
+  ],
+  "Bosque distorsionado": [
+   "ambient/nether/warped_forest/ambience.ogg"
+  ],
+  "Océano": [
+   "ambient/underwater/underwater_ambience.ogg"
+  ],
+  "Colmenas": [
+   "mob/bee/loop1.ogg"
+  ],
+  "End": [
+   "block/end_portal/endportal.ogg"
+  ],
+  "Ciudad del End": [
+   "block/end_portal/endportal.ogg"
+  ]
+ },
+ "musica": {
+  "O": [
+   "music/game/sweden.ogg",
+   "music/game/haggstrom.ogg",
+   "music/game/clark.ogg",
+   "music/game/living_mice.ogg",
+   "music/game/wet_hands.ogg",
+   "music/game/dry_hands.ogg",
+   "music/game/key.ogg",
+   "music/game/oxygene.ogg"
+  ],
+  "N": [
+   "music/game/nether/concrete_halls.ogg",
+   "music/game/nether/warmth.ogg",
+   "music/game/nether/dead_voxel.ogg"
+  ],
+  "E": [
+   "music/game/end/alpha.ogg"
+  ]
+ }
+}
