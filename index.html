@@ -1,0 +1,524 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Torre Mundo v7</title><link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f4f6;--fg:#15181d;--card:#fff;--mu:#5d6673;--ln:#dfe3e8;box-sizing:border-box;color-scheme:light dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1116;--fg:#eceff3;--card:#181c22;--mu:#98a2b0;--ln:#2a303a}}
+:root[data-theme="dark"]{--bg:#0e1116;--fg:#eceff3;--card:#181c22;--mu:#98a2b0;--ln:#2a303a}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 'DM Sans',system-ui,sans-serif;min-height:100%}
+#pf{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+header,main{position:relative;z-index:1}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln);padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
+h1{font-size:20px;margin:0;flex:1 1 auto}
+button{font:inherit;color:inherit;background:var(--card);border:1px solid var(--ln);border-radius:999px;padding:6px 14px;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .2s}
+button:hover{border-color:var(--fg);transform:translateY(-1px)}button:active{transform:scale(.95)}button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+button[aria-pressed="true"],#tabs .on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+#tabs{display:flex;gap:6px}
+.pg{flex:1 1 100%;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mu)}
+.pg i{flex:1;height:6px;border-radius:9px;background:var(--ln);overflow:hidden}.pg u{display:block;height:100%;background:linear-gradient(90deg,#f4a6c0,#ffd25a,#3fd0c0,#9a6be0);transition:width .6s}
+main{max-width:780px;margin:0 auto;padding:16px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:18px;font-size:14px;color:var(--mu)}
+#tw{display:flex;flex-direction:column;align-items:center;gap:5px}
+.roof{width:34%;height:38px;clip-path:polygon(50% 0,100% 100%,0 100%);transition:.6s;animation:pop .6s both}
+.fl{position:relative;display:flex;align-items:center;gap:10px;height:56px;padding:0 14px;border:0;border-radius:10px;background:color-mix(in srgb,var(--c) 30%,var(--card));color:var(--fg);text-align:left;min-width:250px;animation:rise .5s both;animation-delay:calc(var(--k)*25ms)}
+.fl:hover{transform:scale(1.03);box-shadow:0 6px 22px color-mix(in srgb,var(--c) 45%,transparent)}
+.fl.dn{background:var(--c);color:var(--t);box-shadow:0 0 16px var(--c),0 0 40px color-mix(in srgb,var(--c) 55%,transparent);animation:rise .5s both,glow 3s ease-in-out infinite;animation-delay:calc(var(--k)*25ms),0s}
+.fl .n{font-size:13px;opacity:.7;width:24px}.fl b{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fl em{font-style:normal;font-size:12px;opacity:.75}
+.fl .ck{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.9);color:#0a8a3a;display:none;place-items:center;font-weight:700;animation:pop .5s both}.fl.dn .ck{display:grid}
+.fl .sw{width:12px;height:12px;border-radius:3px;background:var(--c)}.fl.dn .sw{display:none}
+.base{width:100%;height:12px;margin-top:6px;border-radius:4px;background:var(--ln)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}@keyframes pop{from{opacity:0;transform:scale(.6)}}
+@keyframes glow{50%{box-shadow:0 0 26px var(--c),0 0 60px color-mix(in srgb,var(--c) 70%,transparent)}}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}#ov.on{display:flex}
+#dg{background:var(--card);width:min(560px,100%);max-height:calc(100% - 8px);overflow:auto;border-radius:16px;animation:pop .3s both}
+#dg .hd{display:flex;justify-content:space-between;gap:12px;padding:16px}#dg h2{margin:0;font-size:22px}#dg .hd p{margin:2px 0 0;font-size:14px;opacity:.85}
+#dg .x{background:transparent;border-color:currentColor;padding:2px 10px;height:32px}
+#sc{width:100%;display:block;aspect-ratio:3/2;background:#0b0d12}
+#dg section{padding:12px 16px}#dg h3{font-size:13px;margin:0 0 8px;color:var(--mu);font-weight:500;text-transform:uppercase;letter-spacing:.05em}#dg p{margin:0 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{background:var(--bg);border:1px solid var(--ln);border-radius:999px;padding:2px 10px;font-size:14px;animation:pop .4s both}
+.ft{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding:14px 16px;border-top:1px solid var(--ln);align-items:center}
+.ai{white-space:pre-wrap;font-size:14px;background:var(--bg);border-radius:10px;padding:10px;margin-top:8px}.ai:empty{display:none}
+input,select,textarea{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:8px;width:100%;margin-bottom:8px}
+#rt{display:none;text-align:center}#rt.on{display:block}
+#trk{position:relative;overflow:hidden;height:150px;border-radius:14px;background:var(--card);border:1px solid var(--ln);margin:12px 0}
+#trk:before,#trk:after{content:"";position:absolute;top:0;bottom:0;width:70px;z-index:2;pointer-events:none}
+#trk:before{left:0;background:linear-gradient(90deg,var(--card),transparent)}#trk:after{right:0;background:linear-gradient(-90deg,var(--card),transparent)}
+#mk{position:absolute;left:50%;top:0;bottom:0;width:3px;background:#ffd25a;box-shadow:0 0 14px #ffd25a;z-index:3;transform:translateX(-50%)}
+#st2{display:flex;gap:10px;position:absolute;top:12px;left:0;will-change:transform}
+.rc{flex:0 0 140px;height:126px;border-radius:10px;background:var(--c);color:var(--t);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:14px;padding:6px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.2)}.rc small{font-weight:400;opacity:.8}
+.rc.w{outline:3px solid #ffd25a}
+#res{min-height:60px;animation:pop .4s both}
+@media(max-width:640px){#ov{align-items:flex-end;padding:0}#dg{border-radius:16px 16px 0 0;max-height:92%}.fl em{display:none}.fl{min-width:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+#sc2{width:100%;display:block;aspect-ratio:72/40;image-rendering:pixelated;background:#0b0d12}
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.mc{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px;animation:rise .4s both}
+#dg .mc{background:var(--bg)}.mc img{image-rendering:pixelated;width:40px;height:40px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.35)}.mc b{display:block;font-size:15px}.mc small{color:var(--mu)}
+.fl:after{content:"";position:absolute;inset:0;border-radius:10px;background:#fff;opacity:0;pointer-events:none}.fl.wv:after{animation:wv .7s var(--wd) both}@keyframes wv{30%{opacity:.6}100%{opacity:0}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:30;opacity:0}#fx.on{animation:fxa .8s}@keyframes fxa{0%{opacity:.85}100%{opacity:0}}
+.pp{position:fixed;z-index:40;font-weight:700;font-size:22px;pointer-events:none;color:#ffd25a;text-shadow:0 2px 10px #000;animation:fl 1.6s both;transform:translate(-50%,-50%);white-space:nowrap}@keyframes fl{to{transform:translate(-50%,-220%);opacity:0}}
+main.shk{animation:sk .4s}@keyframes sk{25%{transform:translate(-5px,2px)}50%{transform:translate(5px,-2px)}75%{transform:translate(-3px,2px)}}
+.rc.w{animation:pop .5s .1s both,glow 1.5s infinite}
+/* ===== Macro mejoras ===== */
+#rt{position:relative}
+#towerBuild{margin:18px auto 0;min-height:240px;max-height:520px;border:1px solid var(--ln);border-radius:18px;background:linear-gradient(180deg,color-mix(in srgb,var(--card) 92%,transparent),var(--bg));padding:18px;overflow:hidden;box-shadow:0 14px 50px rgba(0,0,0,.08) inset}
+#towerBuild .bt-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;font-size:13px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em}
+#towerBuild .bt-stack{display:flex;flex-direction:column-reverse;align-items:center;gap:4px;min-height:185px;justify-content:flex-start}
+#towerBuild .bt-floor{width:min(92%,520px);height:34px;border:1px solid color-mix(in srgb,var(--c),#000 18%);border-radius:8px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 92%,#000 8%),color-mix(in srgb,var(--c) 70%,#fff 30%));color:var(--t);box-shadow:0 5px 14px color-mix(in srgb,var(--c) 25%,transparent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;position:relative;overflow:hidden;transform-origin:center bottom}
+#towerBuild .bt-floor:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 0 35%,rgba(255,255,255,.28) 48%,transparent 61%);transform:translateX(-120%);animation:buildshine 1.1s ease-out forwards}
+#towerBuild .bt-floor.new{animation:floorIn .7s cubic-bezier(.2,.9,.2,1) both}
+#towerBuild .bt-floor .bt-n{position:absolute;left:9px;opacity:.75;font-size:11px}
+#towerBuild .bt-floor .bt-dot{position:absolute;right:10px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.75);box-shadow:0 0 12px rgba(255,255,255,.6)}
+@keyframes floorIn{0%{opacity:0;transform:translateY(-120px) scale(.82);filter:blur(5px)}55%{opacity:1;transform:translateY(10px) scale(1.03);filter:blur(0)}75%{transform:translateY(-3px) scale(.995)}100%{transform:translateY(0) scale(1)}}
+@keyframes buildshine{to{transform:translateX(120%)}}
+#towerBuild .bt-empty{display:grid;place-items:center;min-height:180px;color:var(--mu);text-align:center}
+#towerBuild .bt-empty b{display:block;color:var(--fg);font-size:18px;margin-bottom:4px}
+#res{min-height:72px}
+#res .resultCard{display:grid;gap:8px;place-items:center;text-align:center;padding:8px 10px 2px}
+#res .resultCard h2{margin:0}
+#res .resultActions{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
+#res .accept{background:var(--fg);color:var(--bg);border-color:var(--fg);box-shadow:0 6px 20px rgba(0,0,0,.18)}
+#res .accept:hover{box-shadow:0 10px 30px rgba(0,0,0,.22)}
+#trk{height:176px}
+#st2{top:19px}
+.rc{height:138px;transition:transform .2s,box-shadow .25s,filter .25s}
+.rc.spinning{filter:saturate(.88) brightness(.97)}
+.rc.mystery{background:linear-gradient(135deg,#303640,#646c78);border-color:#87909c;color:#fff;box-shadow:inset 0 -6px 0 rgba(0,0,0,.22)}
+.rc.win{outline:3px solid #ffd25a;box-shadow:0 0 0 6px rgba(255,210,90,.12),0 0 28px #ffd25a,inset 0 -6px 0 rgba(0,0,0,.2);transform:translateY(-5px) scale(1.03);animation:winPop .7s cubic-bezier(.2,.9,.2,1) both}
+@keyframes winPop{0%{opacity:.75;transform:translateY(3px) scale(.92)}60%{transform:translateY(-8px) scale(1.06)}100%{opacity:1;transform:translateY(-5px) scale(1.03)}}
+#sc{background:#090c12;image-rendering:pixelated;cursor:default}
+.planLegend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.planLegend span{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ln);background:var(--bg);border-radius:7px;padding:4px 7px;font-size:11px;color:var(--mu)}.planLegend i{display:inline-block;width:12px;height:12px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
+#ov.on #sc{animation:planReveal .55s ease-out both}@keyframes planReveal{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+@media(max-width:640px){#towerBuild{padding:12px}.bt-floor{height:30px;font-size:11px}}
+.tb{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.tb .on{background:var(--fg);color:var(--bg)}
+.fan .mc{animation:fan .45s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i)*40ms);transform-origin:0 100%}
+@keyframes fan{from{opacity:0;transform:rotate(-14deg) translateY(16px) scale(.85)}}
+.cf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.cf input:not([type=color]),.cf select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:6px 8px;flex:1;min-width:0}
+.cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px;max-height:260px;overflow:auto}.cl label{display:flex;gap:8px;align-items:center;font-size:13px;padding:4px}.cl label[hidden]{display:none}.cl img{width:24px;height:24px;image-rendering:pixelated}
+#pl{width:100%;display:block;border-radius:10px;image-rendering:pixelated}
+.lg{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--mu);margin-top:8px}.lg span{display:flex;gap:4px;align-items:center}.lg img{width:16px;height:16px;image-rendering:pixelated}
+
+#sc{aspect-ratio:72/40;image-rendering:pixelated}#pl{background:#0d2a4a}#dg .cf input[type=checkbox]{width:auto;margin:0}.cf input,.cf select{margin:0}details.cf summary{cursor:pointer;color:var(--mu);font-size:14px}
+
+body{background:radial-gradient(1100px 620px at 50% -8%,color-mix(in srgb,var(--ac,#7fb0ff) 18%,transparent),transparent),var(--bg);background-attachment:fixed}
+main{max-width:1500px;padding:20px clamp(12px,3vw,40px)}
+header{padding-inline:clamp(12px,3vw,40px)}#tabs{flex-wrap:wrap}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}.mid{min-width:0}#sl{display:none}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.card h4{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);font-weight:500}
+.dm{margin:8px 0;font-size:13px}.dm i{display:block;height:6px;border-radius:9px;background:var(--ln);margin-top:4px;overflow:hidden}.dm u{display:block;height:100%;transition:width .6s}
+.big{font-size:44px;font-weight:700;line-height:1}
+@media(min-width:1100px){.wrap{grid-template-columns:270px minmax(0,1fr) 270px}#sl{display:block}#sl,#sr{position:sticky;top:120px;align-self:start}}
+#tw,#tw2{max-width:640px;margin:0 auto}#rl{display:none}#rl.on{display:block}
+#fxc{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+.rip{position:fixed;border:2px solid var(--fg);border-radius:50%;pointer-events:none;z-index:70;transform:translate(-50%,-50%);animation:rip .5s ease-out both}@keyframes rip{from{width:0;height:0;opacity:.6}to{width:90px;height:90px;opacity:0}}
+.fl{overflow:hidden}.fl:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-120%);pointer-events:none}.fl:hover:before{transform:translateX(120%);transition:transform .6s}
+#pb.bump{animation:bump .5s}@keyframes bump{50%{filter:brightness(1.7) saturate(1.6)}}
+.dgw{display:block}@media(min-width:900px){#dg{width:min(1080px,94vw)}.dgw{display:grid;grid-template-columns:1.05fr 1fr}.dl{position:sticky;top:0;align-self:start}}
+.hint{text-align:center;padding:40px 0;color:var(--mu)}
+
+body{background-attachment:scroll}
+#tw .fl,#tw2 .fl{animation:none}
+#tw.an .fl,#tw2.an .fl{animation:rise .45s both;animation-delay:calc(var(--k)*18ms)}
+.fl.dn{box-shadow:0 0 14px var(--c)}
+.amb{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+</style></head><body>
+<canvas id="pf"></canvas>
+<header><h1>🏰 Torre Mundo</h1><nav id="tabs"><button class="on" data-t="t">Torre</button><button data-t="r">🎰 Ruleta</button><button data-t="l">🏰 Torre ruleta</button><button data-t="m">Materiales</button></nav><button id="add">＋ Piso</button><button id="mu" aria-label="Efectos">🔊</button><button id="mmu" aria-label="Música">🎵</button>
+<div class="pg"><span id="pt"></span><i><u id="pb"></u></i></div></header>
+<main><div class="wrap"><aside id="sl"></aside><div class="mid">
+<section id="st"><div class="seg"><span>Ordenar por</span><button data-o="color" aria-pressed="true">Color</button><button data-o="dim" aria-pressed="false">Dimensión</button><button data-o="own" aria-pressed="false">Mi orden</button></div><div id="tw"></div></section>
+<section id="rt"><div class="seg" style="justify-content:center">Gira la ruleta y construye el piso que salga. ¿Imposible? Haz reroll.</div><div id="trk"><div id="mk"></div><div id="st2"></div></div><button id="spin" style="font-size:18px;padding:10px 28px">🎰 ¡Girar!</button><div id="res"></div></section>
+<section id="sm" hidden><div class="seg">Todo lo que hay que reunir para la torre, en stacks aproximados.</div><div class="mg" id="ml"></div></section><section id="rl"><div class="seg"><span>Ordenar por</span><button data-o="color" aria-pressed="true">Color</button><button data-o="dim" aria-pressed="false">Dimensión</button><button data-o="own" aria-pressed="false">Mi orden</button></div><div id="tw2"></div></section></div><aside id="sr"></aside></div></main><div id="fx"></div><canvas id="fxc"></canvas>
+<div id="ov"><div id="dg" role="dialog" aria-modal="true"></div></div>
+<script>
+const E={c:['📦','Cofre'],w:['🕸️','Telaraña'],j:['🪑','Cojín'],v:['🕯️','Vela'],l:['🏮','Linterna'],s:['🪧','Cartel'],b:['🛏️','Cama de paja'],f:['🔥','Fogata'],k:['📚','Estantería'],p:['🌸','Flor'],m:['🍄','Seta'],r:['🖼️','Marco'],t:['🪴','Maceta'],q:['🛢️','Barril'],g:['💎','Cristal'],h:['🐝','Colmena'],a:['⚗️','Soporte de pociones'],d:['🎼','Tocadiscos'],x:['🌵','Cactus'],y:['🍂','Hojarasca'],z:['🦴','Fósil'],n:['❄️','Nieve'],o:['🧭','Mapa/Brújula']};
+const DIM={O:'Overworld',N:'Nether',E:'End'};
+// nombre, dim, color, cómo debería ser, decoración, utilidad
+const B=[
+["Roble clásico","O","#b98d55","Plaza central con pozo y camino de adoquín; casas de tablones con tejados a dos aguas, granjas de trigo con paca de heno y un almacén al fondo con bodega oculta bajo una trampilla.","cbslqt","Almacén general: cofres rotulados y camas para dormir."],
+["Sakura","O","#f4a6c0","Estanque de agua con puentes arqueados, farolillos colgando de los cerezos y un pabellón abierto donde los pétalos caen sobre el suelo de musgo.","pjlsvt","Salón de descanso: cojines junto al estanque para pasar el rato."],
+["Océano","O","#2fb8c9","Piso inundado: barco hundido, ruinas de prismarina y un acuario central de cristal con corales de todos los colores.","glcwrz","Acuario: guarda cubos de peces, tridentes y esponjas."],
+["Nether","N","#c23a3a","Puentes de ladrillo del Nether sobre un río de lava, fortaleza colgante con torres y balcones, sin suelo continuo.","fclqvw","Cámara de fundición: hornos y cofres para minerales."],
+["Deep Dark","O","#1f5563","Ciudad antigua silenciosa: calles de deepslate, sculk en las esquinas, sensores y un altar central sin luz.","wvcgkz","Bóveda de tesoros: cofres bajo sensores de sculk."],
+["End","E","#7b4fb0","Islas flotantes unidas por puentes de purpur, torres de cristal y un portal-mirador con vacío debajo.","gvcdok","Museo de trofeos: élitros, cabezas y varas del End."],
+["Jungla","O","#3fae3a","Templo cubierto de raíces con cascadas verticales, trampas escondidas y una cámara superior con piscina.","tmwcps","Invernadero: cultivos de cacao, bambú y melones."],
+["Desierto","O","#e0b94f","Pirámide hueca con oasis interior, corredores de arenisca cortada y ruinas enterradas con salas secretas.","xzcfvs","Trastero seco: cofres de arena, cerámica y tesoros."],
+["Hielo","O","#9ad0f5","Glaciar interior con iglú, lago helado con pista de patinaje y un mirador de auroras.","nljfbc","Cabaña de invierno: fogata, cojines y baúl de abrigo."],
+["Amatista","O","#9a6be0","Geoda gigante y hueca con cristales en las paredes que resuenan al caminar y una plataforma central.","gvjdck","Sala de música: tocadiscos y cofres con discos."],
+["Cobre","O","#d1774a","Fábrica que envejece: del cobre nuevo al verde oxidado, pasarelas, tuberías y una chimenea central.","qcalsr","Taller: yunques, barriles y almacén de herramientas."],
+["Redstone","O","#d02b2b","Corazón mecánico de la torre: ascensores, relojes y almacenes automáticos tras paredes de observadores.","clqasd","Centro de control: almacén clasificador y palancas."],
+["Dripstone","O","#9a7455","Cueva vertical con lagos, estalactitas hasta la base y un camino que zigzaguea entre columnas.","zcwtvg","Almacén de mena: cofres colgantes de las columnas."],
+["Manglar","O","#8a4a52","Pantano con raíces elevadas, niebla y pasarelas de madera hacia una cabaña sobre pilotes.","tsljmq","Puesto de pesca: cañas, barriles y cofres de barro."],
+["Bambú","O","#a6c13a","Jardín zen con templo, estanque de piedra, senderos de bambú y una casa de té con pandas.","jtpvdl","Casa de té: cojines para descansar y estantes de recetas."],
+["Bosque oscuro","O","#4a6a3a","Mansión entre niebla con pasillos sin salida, salas de biblioteca y un ala oculta tras un cuadro.","wkvcrm","Mansión: biblioteca y cofres con botín de invocador."],
+["Badlands","O","#c9702f","Mina abandonada con vagonetas que cruzan varios niveles, cañones y una veta de oro central.","zcxfqw","Depósito minero: rieles, cofres y vagoneta de carga."],
+["Biblioteca","O","#8a5a3a","Catedral de libros con hueco central de diez alturas, pasillos circulares y mesas de encantamiento.","kvjlcr","Sala de encantamientos y almacén de libros."],
+["Colmenas","O","#f0b830","Jardín de flores con colmenas, cascadas de miel y un panal de suelo.","hpltjs","Apiario: cofres de miel, botellas y cera."],
+["Minerales","O","#3fd0c0","Mina de vetas brillantes con galerías radiales, gemas incrustadas y un carro cargado.","gczlvq","Refinería: cofres por mineral y hornos."],
+["Bosque moteado","O","#d9622b","NUEVO 26.3. Bosque otoñal de álamos con hojas rojas, naranjas y amarillas, arbustos rojos, hojarasca y setas de repisa; en el centro, un campamento abandonado.","yjmfbc","Campamento: camas de paja, cojines y fogata para reunirse."],
+["Cuevas de azufre","O","#d8c62a","NUEVO 26.2. Cueva amarilla y roja con estanques de azufre, géiseres, picos de azufre y un cubo de azufre en su jaula.","gzwcvf","Laboratorio: pociones, cofres y bloque de cinabrio."],
+["Bosque distorsionado","N","#1fa89a","Bosque turquesa con hongos gigantes, sotobosque de raíces y un mirador sobre nether wart.","mvlcpk","Jardín: cultivo de verrugas y setas."],
+["Valle de almas","N","#5a7a8a","Arena de almas, huesos fósiles gigantes y linternas de alma flotando sobre un cañón.","zlvcwf","Cripta: cofres con botín de fortaleza."],
+["Deltas de basalto","N","#6b6b74","Columnas de basalto y magma con pasarelas estrechas; una cúpula de cristal en el centro.","fwczlq","Forja: hornos y barriles de lingotes."],
+["Jardín pálido","O","#b9bdb0","Bosque de robles pálidos con musgo blanco, huesos y un creaking hueco en el tronco central.","wvjptm","Estudio: marcos, cojines y libros."],
+["Cuevas frondosas","O","#7fc24a","Cueva con bayas luminosas, azaleas, lagos y una cascada central.","ptmgcl","Cocina: bayas, hornos y barriles."],
+["Sabana","O","#c9a23a","Acacias planas, aldea de tejados rojos, baobabs de troncos y una pista para caballos.","cbslty","Establo: sillas, zanahorias y heno."],
+["Taiga","O","#4f7a5a","Abetos, cabaña de troncos con chimenea, senderos nevados y aullidos de lobos.","nfjcbl","Cabaña de leñador: fogata y baúl de pieles."],
+["Campos de setas","O","#b04a6a","Isla de hongos gigantes con casitas dentro de setas y un lago de sopa.","mtvjcp","Cocina de sopas: hornos y cofres de setas."],
+["Ciudad del End","E","#b58ae0","Torres de purpur con un barco del End, balcones y bóvedas con élitros.","gvcdlo","Hangar: élitros y cofres de shulker."]
+];
+const ls={get:k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let C=ls.get('tm_c')||[],done=new Set(ls.get('tm_d')||[]),own=ls.get('tm_o'),mode=ls.get('tm_m')||'color',list=[],rlist=[],vw='m',cur=-1,F=[];
+let OV=ls.get('tm_mats')||{},CU=ls.get('tm_cust')||[],tab='m',sz='l';const TV={};
+const $=s=>document.querySelector(s),rgb=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));
+const mix=(a,b,t)=>{t=Math.max(0,Math.min(1,t));a=rgb(a);b=rgb(b);return'rgb('+a.map((v,i)=>Math.round(v+(b[i]-v)*t))+')'};
+const tc=h=>{const[r,g,b]=rgb(h);return(r*.299+g*.587+b*.114)>150?'#111':'#fff'};
+const hue=h=>{const[r,g,b]=rgb(h).map(v=>v/255),mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;if(!d)return 0;let x=mx==r?((g-b)/d)%6:mx==g?(b-r)/d+2:(r-g)/d+4;return(x*60+360)%360};
+const build=()=>{F=B.concat(C).map((a,i)=>{const s=(a[6]||0)+(RS[i]||0),r=rng(i*31+s+5),ks=Object.keys(M).filter(k=>M[k][3]!='o'),m=OV[i]||MT[a[0]]||[0,0,0,0].map(()=>ks[Math.floor(r()*ks.length)]);return{i,n:a[0],d:a[1],c:a[2],t:a[3],e:a[4],u:a[5],s,cu:i>=B.length,m,k:KD[a[0]]||['tree','water','lava','cave','dune','void','build'][Math.floor(r()*7)]}})};
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const H=n=>{n=Math.imul(n^n>>>15,2246822507);n=Math.imul(n^n>>>13,3266489909);return(n^n>>>16)>>>0};
+const M={
+roble:["Tablones de roble","#a8834f","#7d5f37","p"],troncoRoble:["Tronco de roble","#6b5233","#3f2e1a","l"],adoquin:["Adoquín","#8a8a8a","#5e5e5e","n"],heno:["Paca de heno","#d8b94a","#a88a26","l"],piedra:["Piedra","#8a8a8a","#707070","n"],
+cerezo:["Tablones de cerezo","#e7a9b8","#c77d92","p"],troncoCerezo:["Tronco de cerezo","#4d3340","#e0a5b5","l"],hojaCerezo:["Hojas de cerezo","#f0a8c8","#d47fa6","n"],musgo:["Musgo","#5d7a2f","#3f5a1f","n"],
+prisma:["Prismarina","#63b5a5","#3f8f86","b"],linternaMar:["Linterna marina","#cdeee6","#7ecfc5","n"],coral:["Coral cerebro","#d36fa7","#b04a86","n"],agua:["Agua","#2f6fd6","#5aa0f0","w"],
+tallo:["Tallo carmesí","#7a2a45","#4f1a2e","l"],netherrack:["Netherrack","#7a3535","#5a2222","n"],ladNether:["Ladrillos del Nether","#3a1a1f","#22090e","b"],lava:["Lava","#e8611a","#ffb03a","w"],piedraLuz:["Piedra luminosa","#e6b35a","#b8843a","n"],
+deepslate:["Deepslate","#4a4a52","#34343a","n"],ladDeep:["Ladrillos de deepslate","#4a4a52","#2a2a30","b"],sculk:["Sculk","#0c2b35","#1fb5c9","n"],faroAlma:["Farol de alma","#2fd5d0","#1a8f9a","n"],
+endStone:["Piedra del End","#e5e3a4","#c8c47a","n"],purpur:["Bloque de purpur","#a57fb8","#8a5fa0","b"],obsidiana:["Obsidiana","#1a1030","#3a1f5a","n"],endRod:["Varilla del End","#f6f0ff","#c8b8ff","n"],
+jungla:["Tablones de jungla","#b18456","#8a6035","p"],troncoJungla:["Tronco de jungla","#5a4a1e","#3b3010","l"],hojaJungla:["Hojas de jungla","#2f8f28","#1c6018","n"],piedraMusgo:["Adoquín musgoso","#6f8a6a","#4e6a4a","n"],
+arenisca:["Arenisca","#dccb8a","#c2b070","n"],areniscaCort:["Arenisca cortada","#e0cf90","#c5b475","b"],arena:["Arena","#e6d59a","#d2c07f","n"],cactus:["Cactus","#3f7a30","#2a5a20","l"],terracota:["Terracota","#a35a3a","#8a4a2e","n"],
+hielo:["Hielo azul","#7fb2f0","#5a90d8","n"],nieve:["Bloque de nieve","#f4f8ff","#dbe6f4","n"],hieloComp:["Hielo compacto","#8fb8f5","#6a9ae0","g"],abeto:["Tablones de abeto","#6b4a2a","#523719","p"],
+amatista:["Bloque de amatista","#8a5fc8","#a67ce0","b"],calcita:["Calcita","#f2f2ee","#dcdcd4","n"],vidrioMorado:["Vidrio tintado","#6a3fa0","#8a5fc8","g"],toba:["Toba","#7a7a6a","#5a5a4a","n"],
+cobre:["Bloque de cobre","#d1774a","#b25a34","b"],cobreExp:["Cobre expuesto","#b08a68","#8a6e50","b"],cobreOx:["Cobre oxidado","#4fb39a","#3a8f7a","b"],cobreDes:["Cobre desgastado","#5fb59a","#8a9a70","b"],
+redstone:["Bloque de redstone","#c01818","#e03a2a","n"],piston:["Pistón","#a8834f","#6d6d6d","p"],observador:["Observador","#6d6d6d","#4a4a4a","b"],lampara:["Lámpara de redstone","#e8c56a","#a8834f","g"],
+dripstone:["Dripstone","#8a6a52","#6a4c38","n"],bayas:["Bayas luminosas","#e8a020","#b87010","n"],
+manglar:["Tablones de manglar","#8a3f43","#6a2d31","p"],troncoManglar:["Tronco de manglar","#5a3a2a","#3c2418","l"],barro:["Barro","#4a3f3a","#3a312d","n"],hojaManglar:["Hojas de manglar","#3f8a3a","#2a6a2a","n"],
+bambuTab:["Tablones de bambú","#d9c25a","#b29a3a","p"],bambuMos:["Mosaico de bambú","#d0b850","#a08830","b"],bambu:["Bambú","#7fae2f","#5a8a20","l"],
+robleOsc:["Tablones de roble oscuro","#3f2a17","#2a1a0d","p"],troncoOsc:["Tronco de roble oscuro","#2f2010","#1a110a","l"],hojaOsc:["Hojas de roble oscuro","#2a5a20","#1a4014","n"],seta:["Seta marrón","#a07a55","#7a5a3a","n"],
+terraRoja:["Terracota roja","#a24d2e","#8a3d22","n"],terraNar:["Terracota naranja","#c9702f","#a8571f","n"],oro:["Bloque de oro","#f5d040","#d8a820","b"],rail:["Raíl","#8a6a3a","#5a5a5a","p"],
+estanteria:["Estantería","#a8834f","#6b5233","p"],encant:["Mesa de encantamientos","#3a1a4a","#c04a4a","n"],alfombra:["Alfombra roja","#a02020","#701010","n"],linterna:["Linterna","#e8b04a","#5a3a1a","n"],
+panal:["Bloque de panal","#e8a820","#c88810","b"],miel:["Bloque de miel","#f2b640","#e89a20","g"],colmena:["Colmena","#c9a558","#8a6a35","p"],cesped:["Bloque de hierba","#5d9a35","#3f7a25","n"],
+diamante:["Mena de diamante","#4de3d0","#000","o"],esmeralda:["Mena de esmeralda","#3fd070","#000","o"],menaOro:["Mena de oro","#f5d040","#000","o"],
+alamo:["Tablones de álamo","#c9773a","#a85a26","p"],hojaOtono:["Hojas de álamo","#d9622b","#a83c14","n"],hojarasca:["Hojarasca","#b5541e","#8a3c12","n"],setaRep:["Seta de repisa","#c9a070","#a07a48","l"],
+azufre:["Bloque de azufre","#d8c62a","#b0a01a","b"],azufrePot:["Azufre potente","#e6d84a","#9a8a10","g"],cinabrio:["Cinabrio","#a82a2a","#7a1a1a","b"],picoAzufre:["Pico de azufre","#c8b420","#8a7a10","n"],
+talloDist:["Tallo distorsionado","#1fa89a","#0f6a68","l"],verrugaDist:["Verruga distorsionada","#14b4a0","#0a7a70","n"],lampHongo:["Lámpara de hongo","#f0a040","#c07020","n"],
+arenaAlmas:["Arena de almas","#5a4a3a","#3e3228","n"],hueso:["Bloque de hueso","#e0dcc8","#b8b49c","b"],basalto:["Basalto","#6b6b74","#4a4a52","l"],basaltoPul:["Basalto pulido","#7a7a84","#5a5a64","b"],magma:["Bloque de magma","#a04a1a","#e07a2a","w"],
+robleP:["Tablones de roble pálido","#d8d2b8","#b8b298","p"],troncoP:["Tronco de roble pálido","#c8c4b0","#7a7660","l"],musgoP:["Musgo pálido","#c0c8b0","#98a088","n"],
+azalea:["Azalea florida","#e07ab0","#3f8a3a","n"],acacia:["Tablones de acacia","#b5643a","#8a4526","p"],troncoAcacia:["Tronco de acacia","#6a6058","#4a4038","l"],troncoAbeto:["Tronco de abeto","#4a3220","#2a1c10","l"],
+hongoRojo:["Bloque de seta roja","#c0302a","#e8e0d0","n"],hongoMarron:["Bloque de seta marrón","#8a6040","#c8a878","n"],micelio:["Micelio","#6a5a72","#54445e","n"],endBrick:["Ladrillos del End","#e8e6b0","#c8c47a","b"],shulker:["Caja de shulker","#8a5fb8","#6a3f98","b"]};
+const MT={"Roble clásico":["roble","troncoRoble","adoquin","heno"],"Sakura":["cerezo","troncoCerezo","hojaCerezo","musgo"],"Océano":["prisma","linternaMar","coral","agua"],"Nether":["tallo","netherrack","ladNether","lava"],"Deep Dark":["deepslate","ladDeep","sculk","faroAlma"],"End":["endStone","purpur","obsidiana","endRod"],"Jungla":["jungla","troncoJungla","hojaJungla","piedraMusgo"],"Desierto":["arenisca","areniscaCort","arena","cactus"],"Hielo":["hielo","nieve","hieloComp","abeto"],"Amatista":["amatista","calcita","vidrioMorado","toba"],"Cobre":["cobre","cobreExp","cobreDes","cobreOx"],"Redstone":["redstone","piston","observador","lampara"],"Dripstone":["dripstone","toba","bayas","musgo"],"Manglar":["manglar","troncoManglar","barro","hojaManglar"],"Bambú":["bambuTab","bambuMos","bambu","piedra"],"Bosque oscuro":["robleOsc","troncoOsc","hojaOsc","seta"],"Badlands":["terraRoja","terraNar","oro","rail"],"Biblioteca":["estanteria","encant","alfombra","linterna"],"Colmenas":["panal","miel","colmena","cesped"],"Minerales":["diamante","esmeralda","menaOro","deepslate"],
+"Bosque moteado":["alamo","hojaOtono","hojarasca","setaRep"],"Cuevas de azufre":["azufre","azufrePot","cinabrio","picoAzufre"],"Bosque distorsionado":["talloDist","verrugaDist","netherrack","lampHongo"],"Valle de almas":["arenaAlmas","hueso","faroAlma","ladNether"],"Deltas de basalto":["basalto","basaltoPul","magma","lava"],"Jardín pálido":["robleP","troncoP","musgoP","hueso"],"Cuevas frondosas":["azalea","bayas","musgo","agua"],"Sabana":["acacia","troncoAcacia","heno","terraNar"],"Taiga":["abeto","troncoAbeto","nieve","piedra"],"Campos de setas":["hongoRojo","hongoMarron","micelio","seta"],"Ciudad del End":["purpur","endBrick","endRod","shulker"]};
+const KD={"Roble clásico":"tree","Sakura":"tree","Océano":"water","Nether":"lava","Deep Dark":"cave","End":"void","Jungla":"tree","Desierto":"dune","Hielo":"dune","Amatista":"cave","Cobre":"build","Redstone":"build","Dripstone":"cave","Manglar":"water","Bambú":"tree","Bosque oscuro":"tree","Badlands":"dune","Biblioteca":"build","Colmenas":"tree","Minerales":"cave","Bosque moteado":"tree","Cuevas de azufre":"cave","Bosque distorsionado":"tree","Valle de almas":"cave","Deltas de basalto":"lava","Jardín pálido":"tree","Cuevas frondosas":"cave","Sabana":"dune","Taiga":"tree","Campos de setas":"tree","Ciudad del End":"void"};
+const stk=(i,k)=>3+H(i*31+k.length*7+k.charCodeAt(0))%10;
+const TC={};
+function tex(k){if(TC[k])return TC[k];const[n,a,b,t]=M[k],c=document.createElement('canvas');c.width=c.height=16;const x=c.getContext('2d'),s=k.length*13+k.charCodeAt(1);
+for(let i=0;i<16;i++)for(let j=0;j<16;j++){const v=H(i*16+j+s)%100;let o;
+if(t=='p')o=j%4==3?b:mix(a,b,v/450+((i+(j>>2)*5)%16==0?.6:0));
+else if(t=='l')o=mix(a,b,(i%4==0?.75:.1)+v/500);
+else if(t=='b')o=(j%4==3||(i+((j>>2)%2)*4)%8==0)?b:mix(a,b,v/500);
+else if(t=='o')o=(H(i*5+j*11+s)%100<22)?a:mix('#8c8c8c','#6b6b6b',v/100);
+else if(t=='g')o=(i%15==0||j%15==0)?a:((i==j||i==j+1)&&i>2&&i<9?b:mix(a,b,.35+v/400));
+else if(t=='w')o=mix(a,b,.5+.4*Math.sin((i+j*2)/2.2)+v/500);
+else o=mix(a,b,v/100);
+x.fillStyle=o;x.fillRect(i,j,1,1)}
+TV[k]=c;return TC[k]=c.toDataURL()}
+function scene(cv,f){const W=72,Hh=40,x=cv.getContext('2d'),c=f.c,mt=f.m.map(k=>M[k]),R=(a,b,w,h,o)=>{x.fillStyle=o;x.fillRect(a,b,w,h)},g=a=>26+Math.round(3*Math.sin(a/6+f.i)+2*Math.sin(a/2.3)),dark=f.k=='cave'||f.k=='void'||f.k=='lava';
+for(let y=0;y<Hh;y++)R(0,y,W,1,mix(dark?'#05060a':'#1b2233',c,y/Hh*(dark?.4:.7)));
+for(let n=0;n<20;n++)R(H(n*7+f.i)%W,H(n*3+f.i)%16,1,1,'rgba(255,255,255,.7)');
+if(f.k=='tree'){for(let a=0;a<W;a++){const t=g(a);R(a,t,1,Hh-t,mix(c,'#1e3a1a',.55));R(a,t,1,1,mix(c,'#ffffff',.15));if(a%11==5){R(a,t-7,2,7,mt[1][1]);R(a-3,t-13,8,7,c);R(a-2,t-15,6,3,mix(c,'#ffffff',.2))}}}
+else if(f.k=='water'){R(0,14,W,26,mix('#0b3a66',c,.4));for(let a=0;a<W;a++){R(a,14+Math.round(Math.sin(a/3)),1,1,'#bfe9ff');R(a,36,1,4,mix(mt[0][1],'#e6d59a',.5));if(a%8==3)R(a,30-H(a)%6,2,8,mt[2][1])}for(let n=0;n<5;n++)R(8+n*13,20+H(n)%8,3,1,'#ffd25a')}
+else if(f.k=='lava'){R(0,32,W,8,'#e8611a');for(let a=0;a<W;a++)R(a,32+(a%5<2?1:0),1,1,'#ffb03a');R(4,24,64,3,mt[2][1]);for(let a=8;a<68;a+=14)R(a,27,3,5,mt[1][1]);R(30,10,12,14,mt[2][1]);R(33,13,2,3,'#ffb03a')}
+else if(f.k=='cave'){R(0,32,W,8,mix(mt[0][1],'#000',.5));for(let a=0;a<W;a+=3){R(a,0,2,3+H(a+f.i)%9,mt[0][1]);R(a,32-H(a*2)%4,2,4,mt[0][2])}for(let n=0;n<14;n++)R(H(n*9+f.i)%W,14+H(n*5)%16,2,2,c)}
+else if(f.k=='dune'){for(let a=0;a<W;a++){const t=24+Math.round(5*Math.sin(a/7+f.i)+2*Math.sin(a/2));R(a,t,1,Hh-t,mt[0][1]);R(a,t,1,2,mix(mt[0][1],'#fff',.25))}for(let r=0;r<10;r++)R(46-r,16+r,2*r+1,1,mt[1][1]);R(6,6,5,5,'#fff6c8')}
+else if(f.k=='void'){for(const[a,b,w]of[[8,26,24],[38,18,26],[26,32,14]]){R(a,b,w,2,mt[0][1]);for(let r=1;r<8;r++)R(a+r,b+1+r,Math.max(1,w-2*r),1,mix(mt[1][1],'#000',.3));R(a+3,b-6,3,6,c);R(a+w-6,b-4,3,4,c)}}
+else{R(0,30,W,10,mix(c,'#000',.5));R(18,16,36,14,mt[0][1]);for(let r=0;r<9;r++)R(16+r,8+r,40-2*r,1,c);for(let a=22;a<50;a+=8){R(a,20,4,4,'#ffe27a')}R(34,24,5,6,mt[1][1]);R(56,22,8,8,mt[2][1]);R(4,24,8,6,mt[3][1])}}
+function scene2(cv,f){const x=cv.getContext('2d');scene(cv,{...f,i:f.i+f.s*40});const mt=f.m.map(k=>M[k]),R=(a,b,w,h,o)=>{x.fillStyle=o;x.fillRect(a,b,w,h)},X=10+H(f.i*13+f.s)%44,c1=mt[0][1],c2=mt[1][1],v=Math.floor(f.i/8)%4;
+if(v==1){for(let a=-5;a<=5;a++)for(let b=-5;b<=5;b++)if(a*a+b*b<26)R(58+a,8+b,1,1,'#fff6c8')}
+if(v==2){for(let n=0;n<12;n++)R(H(n*5+f.i)%72,H(n*9+f.i)%14,1,1,'#fff');R(6,7,14,2,'rgba(255,255,255,.35)');R(44,4,18,2,'rgba(255,255,255,.3)')}
+if(v==3){for(let a=0;a<72;a++){const h=Math.round(6+5*Math.sin(a/5+f.i));R(a,18-h,1,h+4,'rgba(0,0,0,.28)')}}
+R(X-8,30,20,10,c2);R(X-8,30,20,1,mix(c1,'#fff',.3));
+[()=>{R(X,12,6,18,c1);R(X-1,10,8,2,c2);R(X+2,16,2,3,'#ffe27a');R(X+2,22,2,3,'#ffe27a')},
+()=>{R(X-4,22,12,8,c1);for(let r=0;r<6;r++)R(X-6+r,16+r,16-2*r,1,c2);R(X,25,3,5,'#3a2a1a');R(X+5,24,2,2,'#ffe27a')},
+()=>{R(X-7,26,18,2,c1);R(X-7,28,3,2,c2);R(X+8,28,3,2,c2);R(X-7,22,1,4,c2);R(X+10,22,1,4,c2);R(X-7,21,1,1,'#ffe27a');R(X+10,21,1,1,'#ffe27a')},
+()=>{R(X,10,5,20,'#f4f4f0');R(X,14,5,3,c2);R(X,20,5,3,c2);R(X-1,8,7,2,c1);R(X+1,6,3,2,'#ffe27a');R(X+5,7,22,1,'rgba(255,240,150,.5)')},
+()=>{R(X,18,6,12,c1);for(let r=-7;r<=7;r++){R(X+3+r,21+r,1,1,c2);R(X+3+r,21-r,1,1,c2)}},
+()=>{R(X,14,2,16,c1);R(X+8,14,2,16,c1);R(X,12,10,2,c1);R(X+2,14,6,16,'rgba(150,80,255,.65)')},
+()=>{R(X,20,2,10,c1);R(X+5,23,2,7,c1);R(X+10,18,2,12,c1);R(X-1,18,4,2,c2);R(X+9,16,4,2,c2)},
+()=>{for(let r=0;r<8;r++)R(X-r,22+r,2*r+1,1,c2);R(X+9,27,3,3,'#ff8a1a');R(X+10,25,1,2,'#ffd25a')}][f.i%8]()}
+function matsAll(){const A={};F.forEach(f=>f.m.forEach(k=>{const q=stk(f.i,k);(A[k]=A[k]||{s:0,n:0}).s+=q;A[k].n++}));$('#ml').innerHTML=Object.keys(A).sort((p,q)=>A[q].s-A[p].s).map((k,i)=>`<div class="mc" style="animation-delay:${i*15}ms"><img alt="" src="${tex(k)}"><div><b>${M[k][0]}</b><small>≈ ${A[k].s} stacks · ${A[k].n} ${A[k].n>1?'pisos':'piso'}</small></div></div>`).join('')}
+let RS=ls.get('tm_rs')||{};
+let tm=null;
+let buildOrder=ls.get('tm_bo')||[];
+function syncBuildOrder(){buildOrder=buildOrder.filter((i,x,a)=>F[i]&&a.indexOf(i)==x);ls.set('tm_bo',buildOrder)}
+function renderRouletteTower(newId=-1){syncBuildOrder();const st=$('#btStack'),count=$('#btCount');if(!st)return;count.textContent=buildOrder.length+' piso'+(buildOrder.length===1?'':'s');if(!buildOrder.length){st.innerHTML='<div class="bt-empty"><div><b>La torre está esperando su primer piso.</b><span>Gira la ruleta, acepta el resultado y aparecerá aquí.</span></div></div>';return}st.innerHTML=buildOrder.map((id,i)=>{const f=F[id];return `<div class="bt-floor ${id===newId?'new':''}" style="--c:${f.c};--t:${tc(f.c)}"><span class="bt-n">PISO ${i+1}</span><b>${f.n}</b><span class="bt-dot"></span></div>`}).join('')}
+function acceptRoulette(id){const f=F[id];if(!f||buildOrder.includes(id))return;MC.anvil();setTimeout(MC.xp,200);setTimeout(()=>blockSfx(f,1),120);done.add(id);if(!buildOrder.includes(id))buildOrder.push(id);ls.set('tm_d',[...done]);ls.set('tm_bo',buildOrder);R();renderRouletteTower(id);const builtNo=buildOrder.length;$('#res').innerHTML=`<div class="resultCard"><h2>🏗️ PISO ${builtNo} COLOCADO: ${f.n}</h2><p style="margin:0;color:var(--mu)">La torre acaba de crecer un piso. El siguiente giro no podrá repetir este bioma.</p><div class="resultActions"><button data-r="t">🏰 Ver mi torre de la ruleta</button></div></div>`;delete $('#res').dataset.k;const host=$('#res').getBoundingClientRect();biomeFx(f);orbs(host.left+host.width/2,host.top+40,14);burst(host.left+host.width/2,host.top+90,120,[f.c,mix(f.c,'#fff',.5),'#ffd25a','#fff']);fxFlash(f.c);shake();playBiomeSound(f,'enter');sfx.win();sfx.chime();pop(host.left+host.width/2,host.top+85,'PISO '+builtNo+' COLOCADO ✓')}
+
+// ===== Audio =====
+let ac,mg,muted=!!ls.get('tm_mute'),dim='O',dr=[],delay;
+const SC={O:[220,247,262,330,392,440,523],N:[110,117,139,165,175,208],E:[294,392,440,587,659,880]},DR={O:[110,165],N:[55,58],E:[147,220]};
+let mb,mvol=ls.get('tm_mvol')??.5,musicOn=ls.get('tm_music')!==false,mT,pl=[],pa=null;
+function au(){if(ac){if(ac.state==='suspended')ac.resume();return}try{ac=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}
+mg=ac.createGain();mg.gain.value=muted?0:.72;mg.connect(ac.destination);delay=ac.createDelay();delay.delayTime.value=.42;const fb=ac.createGain();fb.gain.value=.32;delay.connect(fb);fb.connect(delay);delay.connect(mg);
+mb=ac.createGain();mb.gain.value=musicOn?mvol:0;const cv=ac.createConvolver(),len=Math.floor(ac.sampleRate*3.2),ib=ac.createBuffer(2,len,ac.sampleRate);for(let c=0;c<2;c++){const d=ib.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}cv.buffer=ib;const wet=ac.createGain();wet.gain.value=.55;mb.connect(ac.destination);mb.connect(cv);cv.connect(wet);wet.connect(ac.destination);mus();sndDecodeAll();musStart()}
+function pn(f,v=.05,d=3.4){if(!ac||!musicOn||pa)return;const n=ac.currentTime,o=ac.createOscillator(),o2=ac.createOscillator(),g=ac.createGain(),g2=ac.createGain(),l=ac.createBiquadFilter();o.type='triangle';o2.type='sine';o.frequency.value=f;o2.frequency.value=f*2;g2.gain.value=.25;l.type='lowpass';l.frequency.value=1900;g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(v,n+.01);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(l);o2.connect(g2);g2.connect(l);l.connect(g);g.connect(mb);o.start(n);o2.start(n);o.stop(n+d+.1);o2.stop(n+d+.1)}
+const CH={O:[[262,330,392,494],[220,262,330,392],[175,220,262,349],[196,247,294,392]],N:[[147,175,220,262],[117,147,175,233],[131,165,196,247]],E:[[294,440,587,659],[247,370,494,587],[330,494,659,740]]};
+function mus(){clearTimeout(mT);const st=()=>{if(ac&&musicOn&&!pa&&document.visibilityState!=='hidden'){const ch=CH[dim]||CH.O,c=ch[Math.floor(Math.random()*ch.length)],n=2+Math.floor(Math.random()*3);for(let i=0;i<n;i++)setTimeout(()=>pn(c[Math.floor(Math.random()*4)]*(Math.random()<.35?2:1),.04+Math.random()*.02),i*(700+Math.random()*900));if(Math.random()<.5)pn(c[0]/2,.05,4.6)}mT=setTimeout(st,5200+Math.random()*4500)};st()}
+function nextTrack(){if(!pl.length)return;pa=new Audio(pl[Math.floor(Math.random()*pl.length)]);pa.volume=mvol;pa.onended=nextTrack;musicOn&&pa.play().catch(()=>{})}
+
+function tone(f,d,t,v,dl){if(!ac||muted)return;const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime;o.type=t||'sine';o.frequency.setValueAtTime(f,n);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(v||.05,n+.012);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(mg);if(dl)g.connect(delay);o.start(n);o.stop(n+d+.05)}
+function sweep(a,b,d,v){if(!ac||muted)return;const o=ac.createOscillator(),g=ac.createGain(),l=ac.createBiquadFilter(),n=ac.currentTime;o.type='sawtooth';o.frequency.setValueAtTime(a,n);o.frequency.exponentialRampToValueAtTime(b,n+d);g.gain.setValueAtTime(v,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);l.type='lowpass';l.frequency.value=2200;o.connect(l);l.connect(g);g.connect(mg);o.start(n);o.stop(n+d+.05)}
+function noise(d=.16,v=.035,freq=1800){if(!ac||muted)return;const n=ac.currentTime,buf=ac.createBuffer(1,Math.max(1,Math.floor(ac.sampleRate*d)),ac.sampleRate),data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;const src=ac.createBufferSource(),g=ac.createGain(),l=ac.createBiquadFilter();l.type='bandpass';l.frequency.value=freq;l.Q.value=.7;g.gain.setValueAtTime(v,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);src.buffer=buf;src.connect(l);l.connect(g);g.connect(mg);src.start(n);src.stop(n+d)}
+function pluck(a,d=.16,v=.045){tone(a,d,'triangle',v,1);tone(a*1.5,d*.7,'sine',v*.42,1)}
+function bee(){if(!ac||muted)return;const n=ac.currentTime;for(let i=0;i<2;i++){const o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.setValueAtTime(145+i*12,n);o.frequency.linearRampToValueAtTime(175+i*8,n+.14);o.frequency.linearRampToValueAtTime(135+i*10,n+.34);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.045,n+.03);g.gain.exponentialRampToValueAtTime(.0001,n+.42);o.connect(g);g.connect(mg);o.start(n);o.stop(n+.45)}}
+function bubble(){noise(.1,.025,520);tone(760,.18,'sine',.025,1);tone(1100,.26,'sine',.018,1)}
+function woodCut(){pluck(260,.13,.055);pluck(190,.18,.035);noise(.08,.018,260)}
+function copper(){pluck(740,.28,.05);setTimeout(()=>pluck(1080,.42,.032),55)}
+function lava(){noise(.24,.02,190);tone(82,.34,'sine',.035);setTimeout(()=>noise(.15,.016,540),75)}
+function sparkle(){tone(660,.22,'sine',.025,1);setTimeout(()=>tone(990,.34,'sine',.018,1),70);setTimeout(()=>tone(1320,.45,'sine',.012,1),145)}
+function sculk(){tone(92,.5,'sine',.025);setTimeout(()=>tone(154,.34,'sine',.016),60);noise(.14,.01,380)}
+function stone(){pluck(220,.22,.04);pluck(165,.28,.022)}
+function wind(){noise(.55,.018,850);sweep(1200,650,.5,.015)}
+function magic(){tone(392,.25,'triangle',.018,1);setTimeout(()=>tone(523,.3,'triangle',.02,1),70);setTimeout(()=>tone(784,.42,'sine',.018,1),150)}
+function sand(){noise(.22,.018,1200);sweep(900,500,.22,.018)}
+function ice(){tone(1600,.25,'sine',.014,1);setTimeout(()=>tone(2200,.4,'sine',.01,1),65)}
+function petals(){noise(.28,.01,1800);tone(780,.35,'sine',.014,1)}
+const sq=a=>a.forEach(([t,fn])=>setTimeout(fn,t)),rn=(a,b)=>a+Math.random()*(b-a);
+const MC={
+chestOpen:()=>{sweep(90,240,.3,.035);sq([[230,()=>noise(.07,.05,500)]])},
+chestClose:()=>{noise(.08,.06,250);tone(110,.12,'square',.05)},
+click:()=>{tone(1900,.025,'square',.035);tone(950,.05,'square',.03)},
+pickup:()=>tone(rn(600,1200),.1,'sine',.06,1),
+xp:()=>[880,1109,1319,1760].forEach((f,i)=>setTimeout(()=>tone(f*rn(.96,1.04),.12,'sine',.05,1),i*45)),
+levelup:()=>[523,659,784,1047,1319,1568].forEach((f,i)=>setTimeout(()=>tone(f,.4,'triangle',.07,1),i*70)),
+pling:()=>{tone(1046,.3,'sine',.06,1);tone(1568,.2,'sine',.03,1)},
+note:f=>{tone(f,.3,'triangle',.07,1);tone(f*2,.15,'sine',.02)},
+anvil:()=>{tone(180,.35,'square',.05);tone(1200,.25,'triangle',.03);noise(.1,.05,3000)},
+bell:()=>{tone(784,.9,'sine',.05,1);tone(1568,.6,'sine',.02,1)},
+villager:()=>{sweep(260,180,.28,.05);sq([[140,()=>sweep(300,200,.25,.045)]])},
+pig:()=>{sweep(200,140,.09,.06);sq([[110,()=>sweep(190,120,.14,.06)]])},
+cow:()=>sweep(135,90,.55,.06),
+chicken:()=>[900,1100,1000,1200].forEach((f,i)=>setTimeout(()=>tone(f,.06,'square',.03),i*55)),
+horse:()=>{sweep(500,900,.12,.03);sq([[130,()=>sweep(900,300,.4,.03)]])},
+wolf:()=>{sweep(300,650,.5,.03);sq([[450,()=>sweep(650,250,.6,.03)]])},
+ocelot:()=>{sweep(700,1100,.15,.03);sq([[170,()=>sweep(1100,600,.2,.03)]])},
+parrot:()=>{sweep(1500,900,.08,.03);sq([[90,()=>sweep(1700,1000,.1,.03)]])},
+dolphin:()=>{sweep(1400,2400,.12,.02);sq([[130,()=>sweep(2200,1500,.12,.02)]])},
+panda:()=>{tone(300,.25,'triangle',.05);sq([[140,()=>tone(260,.3,'triangle',.05)]])},
+frog:()=>{sweep(180,320,.09,.05);sq([[110,()=>sweep(160,300,.11,.05)]])},
+husk:()=>sweep(130,75,.6,.05),
+creeper:()=>{noise(.7,.05,3200);sq([[650,()=>{noise(.35,.12,180);tone(60,.4,'sawtooth',.08)}]])},
+enderman:()=>{sweep(700,180,.4,.04);sq([[90,()=>sweep(160,700,.35,.03)]])},
+ghast:()=>{sweep(900,250,.6,.03);sq([[300,()=>sweep(700,200,.5,.03)]])},
+portal:()=>{noise(.8,.02,300);sweep(90,300,.8,.03);tone(140,.9,'sine',.03)},
+heartbeat:()=>{tone(55,.18,'sine',.14);sq([[230,()=>tone(48,.22,'sine',.14)]])},
+drip:()=>{tone(1800,.05,'sine',.05);sq([[70,()=>tone(1200,.09,'sine',.03,1)]])},
+piston:()=>{noise(.12,.05,600);sweep(120,260,.12,.04);sq([[130,()=>MC.click()]])},
+minecart:()=>{for(let i=0;i<6;i++)setTimeout(()=>{noise(.04,.04,1600);tone(250,.04,'square',.02)},i*70)},
+book:()=>{noise(.1,.04,1500);tone(320,.06,'triangle',.03);sq([[110,()=>noise(.08,.03,1800)]])},
+splash:()=>{noise(.35,.05,900);sweep(600,220,.3,.02)},
+fizz:()=>noise(.55,.04,3800),
+snow:()=>noise(.16,.04,1200),
+grass:()=>noise(.16,.045,2400),
+gravel:()=>{noise(.2,.06,900);sq([[45,()=>noise(.12,.04,1300)]])},
+glass:()=>{tone(2400,.14,'sine',.03);tone(3100,.1,'sine',.02);noise(.05,.03,5000)},
+wood:()=>{noise(.07,.04,700);tone(220,.09,'triangle',.06);tone(160,.12,'triangle',.04)},
+pick:()=>{noise(.06,.05,2200);tone(300,.08,'square',.04);sq([[120,()=>{noise(.06,.05,2200);tone(330,.08,'square',.04)}]])},
+fungus:()=>{noise(.15,.035,500);tone(150,.14,'sine',.04)},
+creak:()=>{sweep(90,200,.5,.03);sq([[250,()=>sweep(200,80,.4,.03)]])},
+amethyst:()=>[1320,1760,2093,2637].forEach((f,i)=>setTimeout(()=>tone(f,.4,'sine',.035,1),i*60)),
+bee,bubble,woodCut,copper,lava,sparkle,sculk,stone,wind,magic,sand,ice,petals};
+const BS={'Roble clásico':['villager','wood'],'Sakura':['petals','pling'],'Océano':['splash','dolphin'],'Nether':['portal','ghast'],'Deep Dark':['heartbeat','sculk'],'End':['enderman','portal'],'Jungla':['parrot','ocelot'],'Desierto':['sand','husk'],'Hielo':['glass','snow'],'Amatista':['amethyst'],'Cobre':['copper','anvil'],'Redstone':['piston'],'Dripstone':['drip','stone'],'Manglar':['frog','splash'],'Bambú':['woodCut','panda'],'Bosque oscuro':['creak','villager'],'Badlands':['minecart','gravel'],'Biblioteca':['book','magic'],'Colmenas':['bee'],'Minerales':['pling','pick'],'Bosque moteado':['grass','chicken'],'Cuevas de azufre':['fizz','creeper'],'Bosque distorsionado':['fungus','frog'],'Valle de almas':['wind','ghast'],'Deltas de basalto':['lava','stone'],'Jardín pálido':['creak','wind'],'Cuevas frondosas':['drip','frog'],'Sabana':['horse','sand'],'Taiga':['wolf','snow'],'Campos de setas':['cow','fungus'],'Ciudad del End':['enderman','magic']};
+const KS={tree:['grass','pig'],water:['splash','bubble'],lava:['lava','ghast'],cave:['drip','stone'],void:['enderman'],dune:['sand','husk'],build:['piston','anvil']};
+const AMBD={"Manglar": "Ranas + agua + insectos", "Campos de setas": "Sonidos húmedos + viento suave + criaturas nocturnas", "Sakura": "Pájaros + viento entre las hojas + campanillas", "Ciudad del End": "Eco metálico + viento extraño + sonidos de End", "End": "Zumbido profundo + eco + partículas", "Amatista": "Cristales tintineando + ecos", "Deltas de basalto": "Lava + piedra crujiendo + viento volcánico", "Hielo": "Viento frío + crujidos de hielo", "Valle de almas": "Lamentos + viento + fuego de almas", "Deep Dark": "Latidos graves + ecos + vibraciones", "Océano": "Agua + burbujas + sonidos submarinos", "Bosque distorsionado": "Zumbidos alienígenas + sonidos graves", "Minerales": "Golpes de pico + piedras cayendo", "Taiga": "Viento + hojas + lobos a lo lejos", "Jungla": "Pájaros + insectos + hojas", "Bosque oscuro": "Viento grave + ramas crujiendo", "Cuevas frondosas": "Goteo + agua + vegetación", "Jardín pálido": "Silencio + viento + crujidos inquietantes", "Bambú": "Bambú moviéndose + viento + pandas", "Cuevas de azufre": "Vapor + burbujeo + gases", "Desierto": "Viento + arena + algún sonido lejano", "Sabana": "Animales + viento + hierba", "Colmenas": "Zumbido constante de abejas", "Roble clásico": "Pájaros + hojas + viento", "Dripstone": "Gotas de agua + piedras cayendo", "Badlands": "Viento seco + arena + ecos", "Biblioteca": "Páginas + pluma escribiendo + reloj", "Cobre": "Engranajes + electricidad suave + metal", "Bosque moteado": "Pájaros + hojas + pequeños animales", "Redstone": "Chisporroteos + mecanismos + pistones", "Nether": "Lava + fuego + viento infernal"};
+const SNDBASE='sonidos/',SND={"click":["random/click.ogg"],"pickup":["random/pop.ogg"],"xp":["random/orb.ogg"],"levelup":["random/levelup.ogg"],"pling":["note/pling.ogg"],"note":["note/harp.ogg"],"tick":["note/hat.ogg"],"anvil":["random/anvil_use.ogg"],"bell":["block/bell/bell_use01.ogg"],"chestOpen":["block/chest/open.ogg"],"chestClose":["block/chest/close1.ogg","block/chest/close2.ogg","block/chest/close3.ogg"],"whoosh":["ui/toast/in.ogg"],"coin":["note/bell.ogg"],"chime":["note/icechime.ogg"],"win":["ui/toast/challenge_complete.ogg"],"firework":["fireworks/blast1.ogg","fireworks/largeblast1.ogg","fireworks/twinkle1.ogg"],"wood":["dig/wood1.ogg","dig/wood2.ogg","dig/wood3.ogg"],"stone":["dig/stone1.ogg","dig/stone2.ogg","dig/stone3.ogg"],"pick":["dig/stone1.ogg","dig/stone2.ogg","dig/stone3.ogg"],"grass":["dig/grass1.ogg","dig/grass2.ogg","dig/grass3.ogg"],"sand":["dig/sand1.ogg","dig/sand2.ogg","dig/sand3.ogg"],"gravel":["dig/gravel1.ogg","dig/gravel2.ogg","dig/gravel3.ogg"],"snow":["dig/snow1.ogg","dig/snow2.ogg","dig/snow3.ogg"],"glass":["random/glass1.ogg","random/glass2.ogg","random/glass3.ogg"],"fizz":["random/fizz.ogg"],"splash":["liquid/splash.ogg","liquid/splash2.ogg"],"lava":["liquid/lavapop.ogg","liquid/lava.ogg"],"piston":["tile/piston/out.ogg","tile/piston/in.ogg"],"minecart":["minecart/base.ogg"],"book":["item/book/open_flip1.ogg","item/book/open_flip2.ogg","item/book/open_flip3.ogg"],"portal":["portal/trigger.ogg"],"magic":["block/enchantment_table/enchant1.ogg","block/enchantment_table/enchant2.ogg","block/enchantment_table/enchant3.ogg"],"amethyst":["block/amethyst/resonate1.ogg","block/amethyst/resonate2.ogg","block/amethyst/resonate3.ogg"],"sparkle":["block/amethyst/shimmer.ogg"],"ice":["note/icechime.ogg"],"petals":["block/cherry_leaves/break1.ogg","block/cherry_leaves/break2.ogg","block/cherry_leaves/break3.ogg"],"fungus":["block/fungus/break1.ogg","block/fungus/break2.ogg","block/fungus/break3.ogg"],"copper":["block/copper/break1.ogg","block/copper/break2.ogg","block/copper/break3.ogg"],"woodCut":["block/bamboo_wood/break1.ogg","block/bamboo_wood/break2.ogg","block/bamboo_wood/break3.ogg"],"sculk":["block/sculk/break1.ogg","block/sculk/break2.ogg","block/sculk/break3.ogg"],"creak":["ambient/nether/warped_forest/creak1.ogg","ambient/nether/warped_forest/creak2.ogg","ambient/nether/warped_forest/creak3.ogg"],"wind":["ambient/nether/soulsand_valley/whisper1.ogg"],"drip":["block/pointed_dripstone/drip_water1.ogg","block/pointed_dripstone/drip_water2.ogg","block/pointed_dripstone/drip_water3.ogg"],"bubble":["ambient/underwater/additions/bubbles1.ogg","ambient/underwater/additions/bubbles2.ogg","ambient/underwater/additions/bubbles3.ogg"],"cave":["ambient/cave/cave1.ogg","ambient/cave/cave2.ogg","ambient/cave/cave3.ogg"],"heartbeat":["mob/warden/heartbeat_1.ogg","mob/warden/heartbeat_2.ogg"],"villager":["mob/villager/idle1.ogg","mob/villager/idle2.ogg","mob/villager/idle3.ogg"],"pig":["mob/pig/say1.ogg","mob/pig/say2.ogg","mob/pig/say3.ogg"],"cow":["mob/cow/say1.ogg","mob/cow/say2.ogg","mob/cow/say3.ogg"],"chicken":["mob/chicken/say1.ogg","mob/chicken/say2.ogg","mob/chicken/say3.ogg"],"horse":["mob/horse/idle1.ogg","mob/horse/idle2.ogg","mob/horse/idle3.ogg"],"wolf":["mob/wolf/classic/bark1.ogg","mob/wolf/classic/bark2.ogg","mob/wolf/classic/bark3.ogg"],"ocelot":["mob/cat/ocelot/idle1.ogg","mob/cat/ocelot/idle2.ogg","mob/cat/ocelot/idle3.ogg"],"parrot":["mob/parrot/idle1.ogg","mob/parrot/idle2.ogg","mob/parrot/idle3.ogg"],"dolphin":["mob/dolphin/idle1.ogg","mob/dolphin/idle2.ogg","mob/dolphin/idle3.ogg"],"panda":["mob/panda/idle1.ogg","mob/panda/idle2.ogg","mob/panda/idle3.ogg"],"frog":["mob/frog/idle1.ogg","mob/frog/idle2.ogg","mob/frog/idle3.ogg"],"husk":["mob/husk/idle1.ogg","mob/husk/idle2.ogg","mob/husk/idle3.ogg"],"creeper":["mob/creeper/say1.ogg","mob/creeper/say2.ogg","mob/creeper/say3.ogg"],"enderman":["mob/endermen/idle1.ogg","mob/endermen/idle2.ogg","mob/endermen/idle3.ogg"],"ghast":["mob/ghast/moan1.ogg","mob/ghast/moan2.ogg","mob/ghast/moan3.ogg"],"bee":["mob/bee/loop1.ogg","mob/bee/loop2.ogg","mob/bee/loop3.ogg"],"b_wood":["dig/wood1.ogg","dig/wood2.ogg","dig/wood3.ogg"],"p_wood":["dig/wood1.ogg","dig/wood2.ogg","dig/wood3.ogg"],"b_stone":["dig/stone1.ogg","dig/stone2.ogg","dig/stone3.ogg"],"p_stone":["dig/stone1.ogg","dig/stone2.ogg","dig/stone3.ogg"],"b_grass":["dig/grass1.ogg","dig/grass2.ogg","dig/grass3.ogg"],"p_grass":["dig/grass1.ogg","dig/grass2.ogg","dig/grass3.ogg"],"b_sand":["dig/sand1.ogg","dig/sand2.ogg","dig/sand3.ogg"],"p_sand":["dig/sand1.ogg","dig/sand2.ogg","dig/sand3.ogg"],"b_gravel":["dig/gravel1.ogg","dig/gravel2.ogg","dig/gravel3.ogg"],"p_gravel":["dig/gravel1.ogg","dig/gravel2.ogg","dig/gravel3.ogg"],"b_snow":["dig/snow1.ogg","dig/snow2.ogg","dig/snow3.ogg"],"p_snow":["dig/snow1.ogg","dig/snow2.ogg","dig/snow3.ogg"],"b_cloth":["dig/cloth1.ogg","dig/cloth2.ogg","dig/cloth3.ogg"],"p_cloth":["dig/cloth1.ogg","dig/cloth2.ogg","dig/cloth3.ogg"],"b_coral":["dig/coral1.ogg","dig/coral2.ogg","dig/coral3.ogg"],"p_coral":["dig/coral1.ogg","dig/coral2.ogg","dig/coral3.ogg"],"b_cherry":["block/cherry_wood/break1.ogg","block/cherry_wood/break2.ogg","block/cherry_wood/break3.ogg"],"p_cherry":["block/cherry_wood/break1.ogg","block/cherry_wood/break2.ogg","block/cherry_wood/break3.ogg"],"b_netherrack":["block/netherrack/break1.ogg","block/netherrack/break2.ogg","block/netherrack/break3.ogg"],"p_netherrack":["block/netherrack/break1.ogg","block/netherrack/break2.ogg","block/netherrack/break3.ogg"],"b_sculk":["block/sculk/break1.ogg","block/sculk/break2.ogg","block/sculk/break3.ogg"],"p_sculk":["block/sculk/break1.ogg","block/sculk/break2.ogg","block/sculk/break3.ogg"],"b_amethyst":["block/amethyst_cluster/break1.ogg","block/amethyst_cluster/break2.ogg","block/amethyst_cluster/break3.ogg"],"p_amethyst":["block/amethyst_cluster/place1.ogg","block/amethyst_cluster/place2.ogg","block/amethyst_cluster/place3.ogg"],"b_copper":["block/copper/break1.ogg","block/copper/break2.ogg","block/copper/break3.ogg"],"p_copper":["block/copper/break1.ogg","block/copper/break2.ogg","block/copper/break3.ogg"],"b_iron":["block/iron/break1.ogg","block/iron/break2.ogg","block/iron/break3.ogg"],"p_iron":["block/iron/break1.ogg","block/iron/break2.ogg","block/iron/break3.ogg"],"b_dripstone":["block/dripstone/break1.ogg","block/dripstone/break2.ogg","block/dripstone/break3.ogg"],"p_dripstone":["block/dripstone/break1.ogg","block/dripstone/break2.ogg","block/dripstone/break3.ogg"],"b_mud":["block/mud/break1.ogg","block/mud/break2.ogg","block/mud/break3.ogg"],"p_mud":["block/mud/break1.ogg","block/mud/break2.ogg","block/mud/break3.ogg"],"b_bamboo":["block/bamboo_wood/break1.ogg","block/bamboo_wood/break2.ogg","block/bamboo_wood/break3.ogg"],"p_bamboo":["block/bamboo/place1.ogg","block/bamboo/place2.ogg","block/bamboo/place3.ogg"],"b_shelf":["block/chiseled_bookshelf/break1.ogg","block/chiseled_bookshelf/break2.ogg","block/chiseled_bookshelf/break3.ogg"],"p_shelf":["block/chiseled_bookshelf/insert1.ogg","block/chiseled_bookshelf/insert2.ogg","block/chiseled_bookshelf/insert3.ogg"],"b_honey":["block/honeyblock/break1.ogg","block/honeyblock/break2.ogg","block/honeyblock/break3.ogg"],"p_honey":["block/honeyblock/break1.ogg","block/honeyblock/break2.ogg","block/honeyblock/break3.ogg"],"b_deepslate":["block/deepslate/break1.ogg","block/deepslate/break2.ogg","block/deepslate/break3.ogg"],"p_deepslate":["block/deepslate/place1.ogg","block/deepslate/place2.ogg","block/deepslate/place3.ogg"],"b_leaflitter":["block/leaf_litter/break1.ogg","block/leaf_litter/break2.ogg","block/leaf_litter/break3.ogg"],"p_leaflitter":["block/leaf_litter/place1.ogg","block/leaf_litter/place2.ogg","block/leaf_litter/place3.ogg"],"b_sulfur":["block/sulfur/break1.ogg","block/sulfur/break2.ogg","block/sulfur/break3.ogg"],"p_sulfur":["block/sulfur/break1.ogg","block/sulfur/break2.ogg","block/sulfur/break3.ogg"],"b_nylium":["block/nylium/break1.ogg","block/nylium/break2.ogg","block/nylium/break3.ogg"],"p_nylium":["block/nylium/break1.ogg","block/nylium/break2.ogg","block/nylium/break3.ogg"],"b_soulsand":["block/soul_sand/break1.ogg","block/soul_sand/break2.ogg","block/soul_sand/break3.ogg"],"p_soulsand":["block/soul_sand/break1.ogg","block/soul_sand/break2.ogg","block/soul_sand/break3.ogg"],"b_basalt":["block/basalt/break1.ogg","block/basalt/break2.ogg","block/basalt/break3.ogg"],"p_basalt":["block/basalt/break1.ogg","block/basalt/break2.ogg","block/basalt/break3.ogg"],"b_moss":["block/moss/break1.ogg","block/moss/break2.ogg","block/moss/break3.ogg"],"p_moss":["block/moss/break1.ogg","block/moss/break2.ogg","block/moss/break3.ogg"],"b_fungus":["block/fungus/break1.ogg","block/fungus/break2.ogg","block/fungus/break3.ogg"],"p_fungus":["block/fungus/break1.ogg","block/fungus/break2.ogg","block/fungus/break3.ogg"],"b_powder":["block/powder_snow/break1.ogg","block/powder_snow/break2.ogg","block/powder_snow/break3.ogg"],"p_powder":["block/powder_snow/break1.ogg","block/powder_snow/break2.ogg","block/powder_snow/break3.ogg"],"b_calcite":["block/calcite/break1.ogg","block/calcite/break2.ogg","block/calcite/break3.ogg"],"p_calcite":["block/calcite/place1.ogg","block/calcite/place2.ogg","block/calcite/place3.ogg"]},SNDV={"click":0.5,"pickup":0.8,"xp":0.8,"levelup":0.8,"pling":0.9,"note":0.85,"tick":0.35,"anvil":0.8,"bell":0.8,"chestOpen":0.9,"chestClose":0.9,"whoosh":0.6,"coin":0.55,"chime":0.7,"win":0.8,"firework":0.5,"wood":0.9,"stone":0.9,"pick":0.9,"grass":0.9,"sand":0.9,"gravel":0.9,"snow":0.9,"glass":0.8,"fizz":0.7,"splash":0.8,"lava":0.7,"piston":0.8,"minecart":0.5,"book":0.8,"portal":0.7,"magic":0.8,"amethyst":0.8,"sparkle":0.8,"ice":0.8,"petals":0.8,"fungus":0.8,"copper":0.8,"woodCut":0.8,"sculk":0.8,"creak":0.8,"wind":0.8,"drip":0.8,"bubble":0.7,"cave":0.6,"heartbeat":0.8,"villager":0.85,"pig":0.85,"cow":0.85,"chicken":0.85,"horse":0.85,"wolf":0.85,"ocelot":0.85,"parrot":0.85,"dolphin":0.85,"panda":0.85,"frog":0.85,"husk":0.85,"creeper":0.8,"enderman":0.8,"ghast":0.8,"bee":0.7,"b_wood":0.9,"p_wood":0.9,"b_stone":0.9,"p_stone":0.9,"b_grass":0.9,"p_grass":0.9,"b_sand":0.9,"p_sand":0.9,"b_gravel":0.9,"p_gravel":0.9,"b_snow":0.9,"p_snow":0.9,"b_cloth":0.9,"p_cloth":0.9,"b_coral":0.9,"p_coral":0.9,"b_cherry":0.9,"p_cherry":0.9,"b_netherrack":0.9,"p_netherrack":0.9,"b_sculk":0.9,"p_sculk":0.9,"b_amethyst":0.9,"p_amethyst":0.9,"b_copper":0.9,"p_copper":0.9,"b_iron":0.9,"p_iron":0.9,"b_dripstone":0.9,"p_dripstone":0.9,"b_mud":0.9,"p_mud":0.9,"b_bamboo":0.9,"p_bamboo":0.9,"b_shelf":0.9,"p_shelf":0.9,"b_honey":0.9,"p_honey":0.9,"b_deepslate":0.9,"p_deepslate":0.9,"b_leaflitter":0.9,"p_leaflitter":0.9,"b_sulfur":0.9,"p_sulfur":0.9,"b_nylium":0.9,"p_nylium":0.9,"b_soulsand":0.9,"p_soulsand":0.9,"b_basalt":0.9,"p_basalt":0.9,"b_moss":0.9,"p_moss":0.9,"b_fungus":0.9,"p_fungus":0.9,"b_powder":0.9,"p_powder":0.9,"b_calcite":0.9,"p_calcite":0.9},SGAP={"click":30,"pickup":40,"tick":25,"firework":220},MUS={"O":["music/game/sweden.ogg","music/game/haggstrom.ogg","music/game/clark.ogg","music/game/living_mice.ogg","music/game/wet_hands.ogg","music/game/dry_hands.ogg","music/game/key.ogg","music/game/oxygene.ogg"],"N":["music/game/nether/concrete_halls.ogg","music/game/nether/warmth.ogg","music/game/nether/dead_voxel.ogg"],"E":["music/game/end/alpha.ogg"]},AMBL={"Nether":["ambient/nether/nether_wastes/ambience.ogg"],"Deltas de basalto":["ambient/nether/basalt_deltas/ambience.ogg"],"Valle de almas":["ambient/nether/soulsand_valley/ambience.ogg"],"Bosque distorsionado":["ambient/nether/warped_forest/ambience.ogg"],"Océano":["ambient/underwater/underwater_ambience.ogg"],"Colmenas":["mob/bee/loop1.ogg"],"End":["block/end_portal/endportal.ogg"],"Ciudad del End":["block/end_portal/endportal.ogg"]},BLK={"Roble clásico":"wood","Sakura":"cherry","Océano":"coral","Nether":"netherrack","Deep Dark":"sculk","End":"stone","Jungla":"grass","Desierto":"sand","Hielo":"powder","Amatista":"amethyst","Cobre":"copper","Redstone":"iron","Dripstone":"dripstone","Manglar":"mud","Bambú":"bamboo","Bosque oscuro":"wood","Badlands":"gravel","Biblioteca":"shelf","Colmenas":"honey","Minerales":"deepslate","Bosque moteado":"leaflitter","Cuevas de azufre":"sulfur","Bosque distorsionado":"nylium","Valle de almas":"soulsand","Deltas de basalto":"basalt","Jardín pálido":"cloth","Cuevas frondosas":"moss","Sabana":"grass","Taiga":"snow","Campos de setas":"fungus","Ciudad del End":"calcite"},BLKK={"tree":"wood","water":"coral","lava":"netherrack","cave":"stone","void":"stone","dune":"sand","build":"wood"};
+const SR={},SBP={},SD={},SLAST={};
+const spre=p=>SR[p]||(SR[p]=fetch(SNDBASE+p).then(r=>r.ok?r.arrayBuffer():null).catch(()=>null));
+const sdec=p=>{if(!ac)return Promise.resolve(null);return SBP[p]||(SBP[p]=spre(p).then(a=>a?ac.decodeAudioData(a.slice(0)):null).then(b=>{if(b)SD[p]=b;return b}).catch(()=>null))};
+function splay(n,o){o=o||{};const L=SND[n];if(!L||!L.length||!ac||muted)return false;const t=performance.now(),gp=SGAP[n];if(gp&&t-(SLAST[n]||0)<gp)return true;const ok=L.filter(p=>SD[p]);if(!ok.length){L.forEach(sdec);return false}SLAST[n]=t;const p=ok[Math.floor(Math.random()*ok.length)],q=ac.createBufferSource(),gn=ac.createGain();q.buffer=SD[p];if(o.rate)q.playbackRate.value=Math.max(.25,Math.min(4,o.rate));gn.gain.value=o.vol??SNDV[n]??.9;q.connect(gn);gn.connect(mg);q.start();return true}
+function sndPreload(){Object.keys(SND).forEach(k=>SND[k].forEach(spre))}
+function sndDecodeAll(){Object.keys(SND).forEach(k=>SND[k].forEach(sdec))}
+let amb=null;
+function ambStop(){if(!amb)return;const a=amb;amb=null;try{a.g.gain.setTargetAtTime(0,ac.currentTime,.25);setTimeout(()=>{try{a.s.stop()}catch(e){}},900)}catch(e){}}
+async function ambStart(f,ms){const L=AMBL[f.n];if(!L||!ac||muted)return false;const b=await sdec(L[Math.floor(Math.random()*L.length)]);if(!b||!ac)return false;if(!ms&&!$('#ov').classList.contains('on'))return true;ambStop();const s=ac.createBufferSource(),gn=ac.createGain();s.buffer=b;s.loop=true;gn.gain.setValueAtTime(0,ac.currentTime);gn.gain.setTargetAtTime(.55,ac.currentTime,.4);s.connect(gn);gn.connect(mg);s.start();amb={s,g:gn};if(ms)setTimeout(()=>{if(amb&&amb.s===s)ambStop()},ms);return true}
+function synthBiome(f){(BS[f.n]||KS[f.k]||['pling']).forEach((n,i)=>setTimeout(()=>MC[n]&&MC[n](),i*170))}
+function playBiomeSound(f,kind){au();if(!ac||muted)return;synthBiome(f);ambStart(f,kind=='select'?9000:0)}
+function blockSfx(f,only){au();if(!ac||muted)return;const t=BLK[f.n]||BLKK[f.k]||(f.d=='N'?'netherrack':'stone');if(only){splay('p_'+t)||MC.pick();return}splay('b_'+t)||MC.pick();setTimeout(()=>{splay('p_'+t)||MC.wood()},150)}
+/* efectos que antes solo existian sintetizados: se registran en MC para que tengan muestra .ogg + respaldo sintetico */
+MC.whoosh=()=>sweep(180,1400,.4,.05);
+MC.coin=()=>{tone(988,.1,'square',.04);setTimeout(()=>tone(1319,.3,'square',.04),90)};
+MC.chime=()=>[523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone(f,.7,'sine',.09,1),i*110));
+MC.win=()=>[392,523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone(f,.9,'triangle',.09,1),i*90));
+MC.tick=r=>tone(620*(r||1),.045,'square',.018);
+MC.hover=f=>tone(f,.08,'sine',.03);
+MC.firework=()=>{tone(300+Math.random()*300,.5,'sine',.05,1);sweep(300,1600,.25,.03)};
+MC.cave=()=>{MC.drip();sq([[160,()=>MC.stone()]])};
+const SPEC={note:a=>['note',{rate:a[0]/370}],hover:a=>['note',{rate:a[0]/370,vol:.16}],tick:a=>['tick',{rate:a[0]||1}]};
+Object.keys(MC).forEach(k=>{const o=MC[k];MC[k]=(...a)=>{const s=SPEC[k]?SPEC[k](a):[k,{}];if(SND[s[0]]&&splay(s[0],s[1]))return;return o(...a)}});
+const sfx={whoosh:()=>MC.whoosh(),coin:()=>MC.coin(),click:()=>MC.click(),pop:()=>MC.pickup(),tick:()=>MC.tick(),chime:()=>MC.chime(),win:()=>MC.win()};
+/* ===== Musica (HTML Audio) por dimension ===== */
+let musFail=false,mdim='O';
+function nextTrack(){if(musFail)return;const L=MUS[dim]||MUS.O;if(!L||!L.length)return;let p,n=0;do{p=L[Math.floor(Math.random()*L.length)]}while(L.length>1&&pa&&pa.dataset.p===p&&++n<8);const a=new Audio(SNDBASE+p);a.dataset.p=p;a.volume=mvol;a.onended=()=>{if(pa===a)nextTrack()};a.onerror=()=>{if(pa===a){pa=null;musFail=true}};pa=a;musicOn&&a.play().catch(()=>{})}
+function musStart(){if(musicOn&&!pa&&!musFail)nextTrack()}
+function musSwitch(){if(!pa||!musicOn||musFail)return;const o=pa;pa=null;let v=o.volume;const iv=setInterval(()=>{v-=mvol/10;if(v<=.02){clearInterval(iv);o.pause()}else o.volume=Math.max(0,v)},80);nextTrack()}
+
+function setDim(d,c){dim=d;if(d!==mdim){mdim=d;musSwitch()}if(c)document.documentElement.style.setProperty('--ac',c);document.body.dataset.dim=d;PC=c?{...PT[d],c:[c,mix(c,'#fff',.5),...PT[d].c]}:PT[d];if(ac)dr.forEach((o,i)=>o.frequency.setTargetAtTime(DR[d][i],ac.currentTime,1.5))}
+
+// ===== Partículas =====
+const PT={O:{c:['#f4a6c0','#ffe9a8','#b8e08a'],vy:.4,dir:1},N:{c:['#ff7a2a','#ffb03a','#ff4a1a'],vy:-.7,dir:-1},E:{c:['#b58aff','#e6d6ff','#7be0ff'],vy:.1,dir:0}};let PC=PT.O;
+const pf=$('#pf'),px=pf.getContext('2d');let ps=[];
+function rs(){pf.width=innerWidth;pf.height=innerHeight}rs();addEventListener('resize',rs);
+function sp(x,y,burst,col){const c=col||PC.c[Math.floor(Math.random()*PC.c.length)];ps.push({x,y,vx:burst?(Math.random()-.5)*6:(Math.random()-.5)*.5,vy:burst?(Math.random()-.8)*6:PC.vy*(.5+Math.random()),r:1+Math.random()*2.5,c,l:burst?60:600,b:burst})}
+(function pl(){px.clearRect(0,0,pf.width,pf.height);if(!matchMedia('(prefers-reduced-motion:reduce)').matches){if(ps.length<55&&Math.random()<.22)sp(Math.random()*pf.width,PC.vy<0?pf.height:PC.vy>0.2?-5:Math.random()*pf.height);
+ps=ps.filter(p=>p.l-->0&&p.y>-10&&p.y<pf.height+10);ps.forEach(p=>{p.x+=p.vx+Math.sin(p.l/30)*.3;p.y+=p.vy;if(p.b)p.vy+=.15;px.globalAlpha=Math.min(.55,p.l/60);px.fillStyle=p.c;px.fillRect(p.x,p.y,p.r,p.r)})}px.globalAlpha=1;requestAnimationFrame(pl)})();
+const burst=(x,y,n=40,cols)=>{for(let i=0;i<n;i++)sp(x,y,1,cols&&cols[i%cols.length])};
+const fw=(x,y,cols)=>{for(let i=0;i<60;i++){const a=Math.random()*6.28,q=2+Math.random()*4;ps.push({x,y,vx:Math.cos(a)*q,vy:Math.sin(a)*q,r:2+Math.random()*2,c:cols[i%cols.length],l:70,b:1})}MC.firework()};
+const fxFlash=c=>{const e=$('#fx');e.style.background='radial-gradient(circle,'+c+' 0,transparent 70%)';e.classList.remove('on');void e.offsetWidth;e.classList.add('on')};
+const pop=(x,y,t)=>{const d=document.createElement('div');d.className='pp';d.textContent=t;d.style.left=x+'px';d.style.top=y+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1700)};
+const shake=()=>{const m=$('main');m.classList.add('shk');setTimeout(()=>m.classList.remove('shk'),400)};
+// ===== Efectos por bioma =====
+const fxc=$('#fxc'),fxx=fxc.getContext('2d'),dpr=1,rr=(a,b)=>a+Math.random()*(b-a);let fq=[],fon=0;
+function fxs(){fxc.width=innerWidth*dpr;fxc.height=innerHeight*dpr}fxs();addEventListener('resize',fxs);
+const SP={};
+function spr(ch,s,c){s=Math.round(s/4)*4;const k=ch+s+c;if(SP[k])return SP[k];const q=Math.ceil(s*1.8),cv=document.createElement('canvas');cv.width=cv.height=q;const x=cv.getContext('2d');x.font=s+'px system-ui,"Segoe UI Emoji","Apple Color Emoji",sans-serif';x.textAlign='center';x.textBaseline='middle';if(c){x.fillStyle=c;x.shadowColor=c;x.shadowBlur=s*.5}x.fillText(ch,q/2,q/2);return SP[k]=cv}
+let XPS=null;function xps(){if(XPS)return XPS;const cv=document.createElement('canvas');cv.width=cv.height=48;const x=cv.getContext('2d'),g=x.createRadialGradient(24,24,0,24,24,24);g.addColorStop(0,'#fff');g.addColorStop(.4,'#9dff3a');g.addColorStop(1,'rgba(120,255,40,0)');x.fillStyle=g;x.fillRect(0,0,48,48);return XPS=cv}
+function fxAdd(o){const p=Object.assign({a:0,dl:0,l:60,r:0,vr:0,s:20,vx:0,vy:0,ax:0,ay:0,sw:0,ph:Math.random()*6.28},o);p.im=p.xp?xps():spr(p.ch,p.s,p.c);p.w=p.xp?p.s*3:p.im.width;fq.push(p);if(!fon){fon=1;requestAnimationFrame(fxl)}}
+function fxl(){fxx.setTransform(1,0,0,1,0,0);fxx.clearRect(0,0,innerWidth,innerHeight);let w=0;
+for(let i=0;i<fq.length;i++){const p=fq[i];if(p.dl>0){p.dl--;fq[w++]=p;continue}if(++p.a>=p.l)continue;fq[w++]=p;
+if(p.sk){p.x+=(p.sk.x-p.x)*.1;p.y+=(p.sk.y-p.y)*.1}else if(p.sp){p.ang+=p.dang;p.rad*=.97;p.x=p.cx+Math.cos(p.ang)*p.rad;p.y=p.cy+Math.sin(p.ang)*p.rad}else{p.vx+=p.ax;p.vy+=p.ay;p.x+=p.vx+Math.sin(p.a/14+p.ph)*p.sw;p.y+=p.vy}
+p.r+=p.vr;const co=Math.cos(p.r),si=Math.sin(p.r);fxx.setTransform(co,si,-si,co,p.x,p.y);fxx.globalAlpha=Math.max(0,Math.min(1,p.a/5,(p.l-p.a)/14));fxx.drawImage(p.im,-p.w/2,-p.w/2,p.w,p.w)}
+fq.length=w;fxx.setTransform(1,0,0,1,0,0);fxx.globalAlpha=1;if(w)requestAnimationFrame(fxl);else{fon=0;fxx.clearRect(0,0,innerWidth,innerHeight)}}
+const FX={'Roble clásico':['🍃🌾','fall',34],'Sakura':['🌸','fall',60],'Océano':['🫧🐠🫧','rise',40],'Nether':['🔥','rise',60],'Deep Dark':['✦','float',34,['#1fb5c9','#0c8a9a']],'End':['✦🟣','swirl',50,['#c8b8ff','#b58aff']],'Jungla':['🍃🦜','fall',44],'Desierto':['🌵💨','gust',30],'Hielo':['❄️','fall',60],'Amatista':['💜✨','burst',44],'Cobre':['🔶🟢','burst',40],'Redstone':['🔴','rise',42],'Dripstone':['💧','rain',40],'Manglar':['🌿🐸','fall',34],'Bambú':['🎋🍃','fall',40],'Bosque oscuro':['🦇🕸️','float',26],'Badlands':['⛏️🪙','burst',34],'Biblioteca':['📖✨','rise',34],'Colmenas':['🐝🍯','float',36],'Minerales':['💎','burst',42],'Bosque moteado':['🍂🍁','fall',56],'Cuevas de azufre':['💨🟡','rise',40],'Bosque distorsionado':['🍄','rise',36],'Valle de almas':['👻🔵','rise',34],'Deltas de basalto':['🌋🔥','rise',44],'Jardín pálido':['🤍🪶','fall',40],'Cuevas frondosas':['🫐🌸','float',34],'Sabana':['🌾💨','gust',34],'Taiga':['❄️🌲','fall',44],'Campos de setas':['🍄','float',34],'Ciudad del End':['🟪✦','swirl',50,['#e2c8ff','#b58aff']]};
+const FK={tree:['🍃','fall',36],water:['🫧','rise',36],lava:['🔥','rise',44],cave:['✨','float',30],void:['✦','swirl',44,['#c8b8ff']],dune:['💨','gust',30],build:['⚙️','burst',30]};
+function biomeFx(f){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=FX[f.n]||FK[f.k]||FK.build,g=[...c[0]],W=innerWidth,Hh=innerHeight,m=c[1],n=Math.min(24,Math.ceil(c[2]*.5));fxFlash(f.c);
+for(let i=0;i<n;i++){const p={ch:g[i%g.length],c:c[3]?c[3][i%c[3].length]:0,s:rr(18,34),r:rr(-.5,.5),vr:rr(-.05,.05),dl:Math.floor(i*18/n)};
+if(m=='fall'){p.x=rr(0,W);p.y=-30;p.vy=rr(10,15);p.sw=rr(.8,2);p.l=(Hh+60)/p.vy}
+else if(m=='rise'){p.x=rr(0,W);p.y=Hh+30;p.vy=-rr(11,16);p.sw=rr(.8,2);p.l=(Hh+60)/-p.vy}
+else if(m=='rain'){p.x=rr(0,W);p.y=-30;p.vy=rr(24,32);p.vr=0;p.r=0;p.l=(Hh+60)/p.vy}
+else if(m=='gust'){p.x=-40;p.y=rr(0,Hh);p.vx=rr(22,32);p.vy=rr(-.6,.6);p.sw=1.4;p.l=(W+80)/p.vx}
+else if(m=='burst'){const a=rr(0,6.28),v=rr(6,16);p.x=W/2+rr(-40,40);p.y=Hh*.45;p.vx=Math.cos(a)*v;p.vy=Math.sin(a)*v-4;p.ay=.35;p.l=rr(40,58)}
+else if(m=='float'){p.x=rr(0,W);p.y=rr(0,Hh);p.vx=rr(-.5,.5);p.vy=rr(-1.6,-.4);p.sw=.8;p.l=rr(40,62)}
+else{p.sp=1;p.cx=W/2;p.cy=Hh/2;p.ang=rr(0,6.28);p.dang=rr(.05,.09);p.rad=rr(Math.min(W,Hh)*.25,Math.max(W,Hh)*.6);p.l=55}
+fxAdd(p)}}
+function orbs(x,y,n=12){const t=$('#pb').getBoundingClientRect(),tx=t.left+t.width*Math.min(1,done.size/Math.max(1,list.length)),ty=t.top+t.height/2;for(let i=0;i<n;i++)setTimeout(()=>{fxAdd({xp:1,s:rr(7,11),x:x+rr(-30,30),y:y+rr(-30,30),l:38,sk:{x:tx,y:ty}});if(i%3==0)MC.pickup()},i*45)}
+// ===== Torre =====
+const order=()=>{let a=F.map(f=>f.i);const H=(p,q)=>hue(F[p].c)-hue(F[q].c);if(mode=='color')a.sort(H);else if(mode=='dim')a.sort((p,q)=>'ONE'.indexOf(F[p].d)-'ONE'.indexOf(F[q].d)||H(p,q));else{a=(own||[]).filter(i=>F[i]);F.forEach(f=>{if(!a.includes(f.i))a.push(f.i)})}return a};
+function TH(a,id){const N=a.length;if(!N)return'<div class="hint"><b style="display:block;font-size:18px;color:var(--fg)">Aún no hay pisos</b>Gira la ruleta y acepta el resultado para empezar tu torre.</div>';let h='<div class="roof" style="background:'+F[a[N-1]].c+'"></div>';for(let p=N-1;p>=0;p--){const f=F[a[p]],w=N>1?100-p/(N-1)*26:100,d=done.has(f.i);h+=`<button class="fl${d?' dn':''}" data-k="${f.i}" data-v="${id}" style="--c:${f.c};--t:${tc(f.c)};--k:${N-p};width:${w}%"><span class="sw"></span><span class="n">${p+1}</span><b>${f.n}</b><em>${DIM[f.d]}</em><span class="ck">✓</span></button>`}return h+'<div class="base"></div>'}
+function side(){const T=list.length,cols={O:'#3fae3a',N:'#c23a3a',E:'#7b4fb0'},nx=list.slice().reverse().find(i=>!done.has(i));
+$('#sl').innerHTML=`<div class="card"><h4>Progreso</h4><div class="big">${T?Math.round(done.size/T*100):0}%</div><small style="color:var(--mu)">${done.size} de ${T} pisos</small>${['O','N','E'].map(k=>{const a=list.filter(i=>F[i].d==k),n=a.filter(i=>done.has(i)).length;return`<div class="dm">${DIM[k]} · ${n}/${a.length}<i><u style="width:${a.length?n/a.length*100:0}%;background:${cols[k]}"></u></i></div>`}).join('')}</div>`+(nx==null?'<div class="card"><h4>¡Torre completa!</h4><div class="big">🏰</div></div>':`<div class="card"><h4>Siguiente piso por construir</h4><button data-k="${nx}" data-v="m" style="width:100%;border:0;background:${F[nx].c};color:${tc(F[nx].c)}">${F[nx].n}</button></div>`)+'<div class="card"><h4>Atajos</h4><small style="color:var(--mu)">Con un piso abierto: ← → cambian de piso · Esc cierra.</small></div>';
+$('#sr').innerHTML=`<div class="card"><h4>Sonido y música</h4><div class="chips" style="gap:8px"><button data-s="mus" aria-pressed="${musicOn}">🎵 Música</button><button data-s="fx" aria-pressed="${!muted}">🔊 Efectos</button></div><label style="display:block;margin-top:12px;font-size:13px;color:var(--mu)">Volumen de la música<input id="mvol" type="range" min="0" max="100" value="${Math.round(mvol*100)}" style="margin:6px 0 0"></label></div>`}
+function R(an){build();syncBuildOrder();list=order();rlist=list.filter(i=>buildOrder.includes(i));const N=list.length;$('#tw').classList.toggle('an',!!an);$('#tw2').classList.toggle('an',!!an);$('#tw').innerHTML=TH(list,'m');$('#tw2').innerHTML=TH(rlist,'r');document.querySelectorAll('[data-o]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.o==mode));
+$('#pt').textContent=done.size+' de '+N+' pisos construidos';const pb=$('#pb');pb.style.width=done.size/N*100+'%';if(R.pd!==undefined&&R.pd!=done.size){pb.classList.remove('bump');void pb.offsetWidth;pb.classList.add('bump')}R.pd=done.size;matsAll();side()}
+
+const fm=i=>F[i].m,sat=h=>{const[r,g,b]=rgb(h),mx=Math.max(r,g,b);return mx?(mx-Math.min(r,g,b))/mx:0},dh=(a,b)=>{const d=Math.abs(hue(a)-hue(b));return Math.min(d,360-d)};
+CU.forEach(a=>M[a[0]]=a.slice(1));
+const chip=(k,sub,i)=>`<div class="mc" style="--i:${i}"><img alt="" src="${tex(k)}"><div><b>${M[k][0]}</b><small>${sub}</small></div></div>`;
+const usedBy=k=>{const g=F.find(g=>fm(g.i).includes(k));return g?g.n+' · '+DIM[g.d]:'Catálogo'};
+function fan(f,t){const own=fm(f.i);if(t=='m')return own.map((k,i)=>chip(k,'≈ '+stk(f.i,k)+' stacks',i)).join('');
+const cd=Object.keys(M).filter(k=>!own.includes(k)),d=k=>dh(M[k][1],f.c),ch=k=>sat(M[k][1])>.15;let l;
+if(t=='c')l=cd.filter(k=>ch(k)&&d(k)<=26).sort((p,q)=>d(p)-d(q)).map(k=>[k,'Mismo tono · '+usedBy(k)]);
+else l=cd.filter(k=>ch(k)&&d(k)>26&&d(k)<=60).sort((p,q)=>d(p)-d(q)).slice(0,8).map(k=>[k,'Tono vecino · '+usedBy(k)]).concat(cd.filter(k=>!ch(k)).slice(0,5).map(k=>[k,'Neutro que equilibra']));
+return l.length?l.slice(0,14).map((a,i)=>chip(a[0],a[1],i)).join(''):'<small>Nada por aquí todavía.</small>'}
+const cat=f=>{const own=fm(f.i);return `<div class="cf"><input id="q" type="search" placeholder="Buscar ítem…"><button id="rs">Restablecer</button></div><details class="cf"><summary>+ Crear ítem propio</summary><div class="cf" style="margin-top:8px"><input id="cn" type="text" placeholder="Nombre"><input id="cc" type="color" value="#c0392b"><select id="ct"><option value="n">Bloque</option><option value="p">Tablones</option><option value="l">Tronco</option><option value="b">Ladrillo</option><option value="g">Cristal</option><option value="w">Líquido</option><option value="o">Mena</option></select><button id="ca">Crear</button></div></details><div class="cl" id="cl">${Object.keys(M).sort((a,b)=>M[a][0].localeCompare(M[b][0])).map(k=>`<label data-n="${M[k][0].toLowerCase()}"><input type="checkbox" data-m="${k}" ${own.includes(k)?'checked':''}><img alt="" src="${tex(k)}"><span>${M[k][0]}</span></label>`).join('')}</div>`};
+const MK={tree:[[6,5,'🏠','Casa'],[17,17,'💧','Estanque'],[12,24,'🚪','Entrada'],[21,5,'🌳','Bosquecillo']],water:[[12,12,'🐠','Acuario'],[2,12,'⚓','Muelle'],[12,24,'🚪','Entrada'],[22,3,'🚢','Barco']],lava:[[12,12,'🏰','Fortaleza'],[12,24,'🚪','Entrada'],[3,3,'🔥','Lava'],[21,21,'⛏','Mina']],cave:[[12,12,'🕯','Sala central'],[12,24,'🚪','Entrada'],[20,4,'📦','Cofre']],void:[[6,7,'🌀','Isla'],[17,9,'🏯','Torre'],[10,18,'📦','Cofre']],dune:[[12,12,'🔺','Pirámide'],[4,20,'🌴','Oasis'],[12,24,'🚪','Entrada']],build:[[7,7,'🛠','Taller'],[18,7,'📦','Almacén'],[7,18,'🛏','Sala'],[18,18,'💡','Control'],[12,24,'🚪','Entrada']]};
+const lg=a=>{$('#lg').innerHTML=a.filter(r=>r[2]).map(r=>`<span><img alt="" src="${tex(r[1])}">${r[0]}: ${M[r[1]][0]} ≈ ${r[2]} bloques</span>`).join('')};
+function plan4(cv,f){const G=25,m=fm(f.i),x=cv.getContext('2d'),A=m[0]||'piedra',B=m[1]||A,C=m[2]||B,D=m[3]||C,K=[A,B,C,D,D],g=[...Array(G)].map(()=>Array(G).fill(0)),r=n=>H(n*97+f.i*13)%100,
+box=(a,b,w,h,v)=>{for(let y=b;y<b+h;y++)for(let z=a;z<a+w;z++)if(y>=0&&z>=0&&y<G&&z<G)g[y][z]=v},
+ring=(a,b,w,h,v)=>{for(let y=b;y<b+h;y++)for(let z=a;z<a+w;z++)if((y==b||z==a||y==b+h-1||z==a+w-1)&&y>=0&&z>=0&&y<G&&z<G)g[y][z]=v},k=f.k,liq=(k=='water'||k=='lava'),lamp=a=>a.forEach(p=>{if(g[p[1]][p[0]]==0)g[p[1]][p[0]]=7}),disc=(cx,cy,R,v)=>{for(let y=0;y<G;y++)for(let z=0;z<G;z++)if(Math.hypot(z-cx,y-cy)<R)g[y][z]=v};
+if(k=='tree'){for(let n=0;n<18;n++){const a=2+r(n)%21,b=2+r(n+50)%21;box(a-1,b-1,3,3,2);g[b][a]=1}box(0,12,G,1,3);box(12,0,1,G,3);disc(17,17,3.3,5);box(2,2,7,6,0);ring(2,2,7,6,1);g[7][5]=0;box(3,3,2,1,2);box(7,5,1,1,2);lamp([[3,11],[8,11],[16,11],[21,11],[11,3],[11,8],[11,16],[11,21]])}
+else if(k=='water'){box(0,0,G,G,3);box(6,6,13,13,0);ring(6,6,13,13,1);box(0,12,6,1,1);box(19,12,6,1,1);g[12][6]=0;g[12][18]=0;for(let n=0;n<10;n++)g[8+r(n)%9][8+r(n+9)%9]=2;box(10,10,5,5,0);ring(10,10,5,5,2);box(11,11,3,3,3);lamp([[7,7],[17,7],[7,17],[17,17]]);ring(20,2,4,2,1);box(21,2,2,2,2)}
+else if(k=='lava'){box(0,0,G,G,3);box(0,11,G,3,1);box(11,0,3,G,1);box(7,7,11,11,0);ring(7,7,11,11,2);[[12,7],[12,17],[7,12],[17,12]].forEach(a=>g[a[0]][a[1]]=1);box(11,11,3,3,3);lamp([[8,8],[16,8],[8,16],[16,16]]);box(19,19,4,4,1)}
+else if(k=='cave'){box(0,0,G,G,1);let a=12,b=12;for(let n=0;n<240;n++){box(a-1,b-1,2+r(n)%2,2+r(n+3)%2,0);a=Math.max(2,Math.min(22,a+r(n+7)%3-1));b=Math.max(2,Math.min(22,b+r(n+11)%3-1))}for(let n=0;n<30;n++){const a=1+r(n*3)%23,b=1+r(n*5+1)%23;if(!g[b][a])g[b][a]=n%3?2:3}for(let n=0;n<10;n++)lamp([[1+r(n*7)%23,1+r(n*9+2)%23]])}
+else if(k=='void'){g.forEach(w=>w.fill(-1));for(const[a,b,R]of[[6,7,5],[17,9,6],[10,18,4]]){disc(a,b,R,0);for(let y=0;y<G;y++)for(let z=0;z<G;z++){const d=Math.hypot(z-a,y-b);if(d<R&&d>R-1.4)g[y][z]=1}g[b][a]=3}for(let z=10;z<14;z++)g[8][z]=1;lamp([[6,4],[17,5],[10,15]])}
+else if(k=='dune'){for(let q=0;q<7;q++)ring(6+q,6+q,13-2*q,13-2*q,q%2?2:1);g[12][12]=2;box(12,18,1,7,2);disc(4,20,2.8,5);for(let n=0;n<14;n++){const a=r(n)%25,b=r(n+40)%25;if(!g[b][a])g[b][a]=4}g[19][3]=4;g[21][5]=4}
+else{ring(1,1,23,23,1);ring(1,1,12,12,1);ring(12,1,13,12,1);ring(1,12,12,13,1);ring(12,12,13,13,1);[[6,12],[18,12],[12,6],[12,18],[12,24]].forEach(a=>g[a[0]][a[1]]=0);[[5,5],[17,5],[5,17],[17,17]].forEach(a=>box(a[0],a[1],3,3,2));[[3,3],[21,3],[3,21],[21,21],[12,12]].forEach(a=>g[a[1]][a[0]]=3);lamp([[8,3],[16,3],[8,21],[16,21],[9,9],[15,15]])}
+let dest;{const sd=f.i*7+(f.s||0)*13+3,q=H(sd)%8,g0=g.map(r=>r.slice());for(let y=0;y<G;y++)for(let z=0;z<G;z++){let a=z,b=y;if(q&1)a=G-1-a;if(q&2)b=G-1-b;if(q&4){const t=a;a=b;b=t}g[y][z]=g0[b][a]}
+for(let n=0;n<3+H(sd+1)%4;n++){const a=2+H(sd+n*5)%18,b=2+H(sd+n*9+3)%18,w=2+H(sd+n)%3,h=2+H(sd+n*2)%3;if(g[b][a]===0&&g[Math.min(G-1,b+h)][Math.min(G-1,a+w)]===0){ring(a,b,w+1,h+1,n%2?1:2);lamp([[a+1,b+1]])}}
+dest=(sx,sy)=>{for(let y=0;y<G;y++)for(let z=0;z<G;z++){let a=z,b=y;if(q&1)a=G-1-a;if(q&2)b=G-1-b;if(q&4){const t=a;a=b;b=t}if(a==sx&&b==sy)return[z,y]}return[sx,sy]}}
+const N={l:25,m:17,s:11}[sz],S={l:14,m:17,s:22}[sz],P=28,W=N*S+P*2,gg=Array.from({length:N},(_,y)=>Array.from({length:N},(_,z)=>g[Math.floor((y+.5)*G/N)][Math.floor((z+.5)*G/N)]));
+cv.width=cv.height=W;x.imageSmoothingEnabled=false;x.fillStyle='#0d2a4a';x.fillRect(0,0,W,W);
+x.strokeStyle='rgba(127,208,255,.12)';x.lineWidth=1;for(let i=0;i<=W;i+=S){x.beginPath();x.moveTo(i,0);x.lineTo(i,W);x.moveTo(0,i);x.lineTo(W,i);x.stroke()}
+const im=q=>{tex(q);return TV[q]},each=fn=>gg.forEach((w,y)=>w.forEach((v,z)=>v>=0&&fn(v,P+z*S,P+y*S))),fl=v=>v==0||v==5||v==7||(liq&&v==3),cnt={};
+each((v,a,b)=>{if(!fl(v))return;if(v==5){x.fillStyle='#2f6fd6';x.fillRect(a,b,S,S);x.fillStyle='rgba(255,255,255,.28)';x.fillRect(a+2,b+S/2,S-6,1)}else{x.drawImage(im(v==3?D:A),a,b,S,S);if(v!=3){x.fillStyle='rgba(0,0,0,.32)';x.fillRect(a,b,S,S)}}x.strokeStyle='rgba(255,255,255,.07)';x.strokeRect(a+.5,b+.5,S,S)});
+each((v,a,b)=>{if(!fl(v)){x.fillStyle='rgba(0,0,0,.4)';x.fillRect(a+4,b+4,S,S)}});
+each((v,a,b)=>{if(!fl(v)){x.drawImage(im(K[v]),a,b,S,S);x.fillStyle='rgba(255,255,255,.35)';x.fillRect(a,b,S,2);x.fillRect(a,b,2,S);x.fillStyle='rgba(0,0,0,.35)';x.fillRect(a,b+S-2,S,2);x.fillRect(a+S-2,b,2,S)}if(v<5)cnt[v]=(cnt[v]||0)+((liq&&v==3)?0:1);if(v==7){x.save();x.shadowColor='#ffd66b';x.shadowBlur=S;x.fillStyle='#ffe9a0';x.beginPath();x.arc(a+S/2,b+S/2,S*.25,0,7);x.fill();x.restore()}});
+x.strokeStyle='#7fd0ff';x.lineWidth=2;x.strokeRect(P,P,N*S,N*S);x.fillStyle='#bfe8ff';x.textAlign='center';x.font='9px sans-serif';const st=N>20?5:N>12?4:2;
+for(let i=0;i<=N;i+=st){const p=P+i*S;x.fillText(i,p,P-9);x.fillText(i,P-13,p+3);x.lineWidth=1;x.beginPath();x.moveTo(p,P-5);x.lineTo(p,P);x.moveTo(P-5,p);x.lineTo(P,p);x.stroke()}
+x.font='bold 11px sans-serif';x.fillText('◀ '+N+' bloques ▶',W/2,11);x.save();x.translate(11,W/2);x.rotate(-Math.PI/2);x.fillText('◀ '+N+' bloques ▶',0,0);x.restore();
+x.textAlign='left';x.fillText('1 cuadro = 1 bloque · '+f.n.toUpperCase()+' · altura 10 bloques',P,W-9);x.textAlign='right';x.fillText('N ↑',W-P+4,W-9);
+(MK[k]||[]).map(a=>{const d=dest(a[0],a[1]);return[d[0],d[1],a[2],a[3]]}).forEach(a=>{const cx=P+(Math.floor(a[0]*N/G)+.5)*S,cy=P+(Math.floor(a[1]*N/G)+.5)*S;x.textAlign='center';x.font=Math.round(S*.85)+'px sans-serif';x.fillStyle='#fff';x.fillText(a[2],cx,cy+S*.3);if(N>=17){x.font='bold 9px sans-serif';x.lineWidth=3;x.strokeStyle='#000';x.strokeText(a[3],cx,cy+S*.95);x.fillText(a[3],cx,cy+S*.95)}});
+if(done.has(f.i)){x.save();x.translate(W/2,W/2);x.rotate(-.35);x.fillStyle='rgba(60,220,110,.55)';x.font='bold '+Math.round(W/9)+'px sans-serif';x.textAlign='center';x.fillText('CONSTRUIDO',0,14);x.restore()}
+return[['Suelo',A,cnt[0]],['Muros',B,cnt[1]],['Acento',C,cnt[2]],['Detalle',D,(cnt[3]||0)+(cnt[4]||0)]]}
+
+const TS={m:523,c:659,r:784,a:988};
+function open(k,t,force){const sv=$('#dg').scrollTop,first=!$('#ov').classList.contains('on');t=t||tab;tab=t;cur=k;const f=F[k],p=cl().indexOf(k),cn={};for(let i=0;i<8;i++){const q=f.e[i%f.e.length];cn[q]=(cn[q]||0)+1}setDim(f.d,f.c);
+$('#dg').innerHTML=`<div class="hd" style="background:${f.c};color:${tc(f.c)}"><div><h2>${f.n}</h2><p>Piso ${p+1} · ${DIM[f.d]}${f.cu?' · personalizado':''}</p></div><button class="x" data-a="x" aria-label="Cerrar">✕</button></div><div class="dgw"><div class="dl"><canvas id="sc" width="72" height="40"></canvas><section style="padding-top:12px"><h3>Plano del piso</h3><canvas id="pl"></canvas><div class="lg" id="lg"></div><button data-a="rp" style="margin-top:10px">🎲 Otros planos</button></section></div><div class="dr"><section><div class="tb">${[['m','Materiales'],['c','Mismo color'],['r','Combinan'],['a','Catálogo']].map(a=>`<button data-tb="${a[0]}" class="${a[0]==t?'on':''}">${a[1]}</button>`).join('')}</div>${t=='a'?cat(f):`<div class="mg fan">${fan(f,t)}</div>`}</section><section style="padding-top:0"><h3>Cómo debería ser</h3><p>${f.t}</p></section><section style="padding-top:0"><h3>Decoración exclusiva</h3><div class="chips">${Object.keys(cn).map((q,i)=>`<span style="animation-delay:${i*60}ms">${E[q][0]} ${E[q][1]} ×${cn[q]}</span>`).join('')}</div></section><section style="padding-top:0"><h3>Utilidad</h3><p>${f.u}</p></section><section style="padding-top:0"><h3>Ambiente sonoro</h3><div class="amb"><span>${AMBD[f.n]||'Sonido ambiente del bioma'}</span><button data-a="amb">🔊 Escuchar</button></div></section></div></div><div class="ft"><label><input type="checkbox" id="dn" style="width:auto;margin:0" ${done.has(k)?'checked':''}> Piso construido</label><span><button data-a="up">Subir</button> <button data-a="dw">Bajar</button>${f.cu?' <button data-a="del">Borrar</button>':''}${buildOrder.includes(k)?' <button data-a="rm">Quitar de la ruleta</button>':''}</span></div>`;
+scene($('#sc'),f);lg(plan4($('#pl'),f));$('#ov').classList.add('on');$('#dg').scrollTop=first?0:sv;
+$('#dg').querySelectorAll('[data-tb]').forEach(b=>b.onclick=()=>{MC.note(TS[b.dataset.tb]);open(cur,b.dataset.tb)});
+if(t=='a'){$('#q').oninput=e=>document.querySelectorAll('#cl label').forEach(l=>l.hidden=!l.dataset.n.includes(e.target.value.toLowerCase()));
+$('#rs').onclick=()=>{delete OV[k];ls.set('tm_mats',OV);R();open(k,'a')};
+$('#dg').querySelectorAll('[data-m]').forEach(c=>c.onchange=()=>{const a=fm(k).slice(),m=c.dataset.m,i=a.indexOf(m);i<0?a.push(m):a.splice(i,1);OV[k]=a;ls.set('tm_mats',OV);MC.pickup();R();lg(plan4($('#pl'),f))});
+$('#ca').onclick=()=>{const n=$('#cn').value.trim();if(!n)return;const key='u'+Date.now(),c=$('#cc').value,c2='#'+rgb(c).map(v=>Math.round(v*.65).toString(16).padStart(2,'0')).join(''),a=fm(k).slice();M[key]=[n,c,c2,$('#ct').value];CU.push([key,n,c,c2,$('#ct').value]);ls.set('tm_cust',CU);a.push(key);OV[k]=a;ls.set('tm_mats',OV);MC.levelup();R();open(k,'a')}}
+if(first||force){blockSfx(f);biomeFx(f);setTimeout(()=>playBiomeSound(f),380)}}
+const close=()=>{if($('#ov').classList.contains('on')){MC.chestClose();ambStop()}$('#ov').classList.remove('on');clearInterval(tm)};
+const cl=()=>vw=='r'?rlist:list;
+function mv(d){const s=cl(),i=s.indexOf(cur),j=i+d;if(j<0||j>=s.length)return;const a=list.slice(),p=a.indexOf(cur),q=a.indexOf(s[j]);[a[p],a[q]]=[a[q],a[p]];own=a;mode='own';ls.set('tm_o',a);ls.set('tm_m',mode);R();open(cur)}
+function form(){$('#dg').innerHTML=`<div class="hd"><div><h2>Nuevo piso</h2><p>Se generan sus planos y materiales al crearlo.</p></div><button class="x" data-a="x">✕</button></div><section><input id="fn" placeholder="Nombre (ej. Bosque moteado)"><select id="fd"><option value="O">Overworld</option><option value="N">Nether</option><option value="E">End</option></select><input id="fc" type="color" value="#d9622b" style="height:44px"><textarea id="ft" rows="3" placeholder="Descripción: cómo debería ser"></textarea></section><div class="ft"><span></span><button data-a="mk" style="background:var(--fg);color:var(--bg)">Crear piso</button></div>`;$('#ov').classList.add('on')}
+$('#dg').addEventListener('click',e=>{if(e.target.closest('.mc'))MC.pickup()});
+$('#dg').onclick=async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,f=F[cur];
+if(a=='x')close();else if(a=='up')mv(1);else if(a=='dw')mv(-1);
+else if(a=='rp'){MC.magic();RS[cur]=(RS[cur]||0)+1;ls.set('tm_rs',RS);build();open(cur)}
+else if(a=='del'){const x=f.i,mp=i=>i>x?i-1:i,rm=o=>{const r={};for(const k in o)if(+k!=x)r[mp(+k)]=o[k];return r};C.splice(x-B.length,1);done=new Set([...done].filter(i=>i!==x).map(mp));buildOrder=buildOrder.filter(i=>i!==x).map(mp);RS=rm(RS);OV=rm(OV);own=null;mode=mode=='own'?'color':mode;ls.set('tm_c',C);ls.set('tm_d',[...done]);ls.set('tm_bo',buildOrder);ls.set('tm_rs',RS);ls.set('tm_mats',OV);ls.set('tm_m',mode);ls.set('tm_o',null);R();close()}
+else if(a=='rm'){buildOrder=buildOrder.filter(i=>i!==cur);ls.set('tm_bo',buildOrder);MC.gravel();R();close()}
+else if(a=='amb')playBiomeSound(f);
+else if(a=='mk'){const n=$('#fn').value.trim();if(!n){$('#fn').focus();return}const ks=Object.keys(E).sort(()=>Math.random()-.5).slice(0,6).join('');C.push([n,$('#fd').value,$('#fc').value,$('#ft').value||'Piso personalizado.',ks,'Almacén y descanso.',Math.floor(Math.random()*9999)]);ls.set('tm_c',C);own=null;R();sfx.win();open(B.length+C.length-1,'a')}};
+$('#dg').onchange=e=>{if(e.target.id!='dn')return;if(!e.target.checked)MC.gravel();else blockSfx(F[cur],1);if(e.target.checked)done.add(cur);else done.delete(cur);ls.set('tm_d',[...done]);ls.set('tm_bo',buildOrder);R();renderRouletteTower();if(e.target.checked){const r=e.target.getBoundingClientRect();celebrate(F[cur],r.left+10,r.top)}};
+$('#ov').onclick=e=>{if(e.target.id=='ov')close()};addEventListener('keydown',e=>{if(e.key=='Escape')close();if($('#ov').classList.contains('on')&&(e.key=='ArrowRight'||e.key=='ArrowLeft')&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){const s=cl(),j=s.indexOf(cur)+(e.key=='ArrowRight'?1:-1);if(s[j]!=null){MC.pickup();open(s[j],undefined,1)}}});
+const tk=e=>{const b=e.target.closest('[data-k]');if(b){vw=b.dataset.v||'m';au();open(+b.dataset.k)}};['#tw','#tw2','#sl'].forEach(q=>$(q).onclick=tk);
+$('#add').onclick=()=>{au();MC.chestOpen();form()};
+document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{mode=b.dataset.o;MC.note({color:523,dim:659,own:784}[mode]||523);ls.set('tm_m',mode);R(1)});
+function tabTo(t){sfx.whoosh();MC.note({t:523,r:659,l:784,m:988}[t]);document.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x.dataset.t==t));$('#st').hidden=t!='t';$('#rt').classList.toggle('on',t=='r');$('#rl').classList.toggle('on',t=='l');$('#sm').hidden=t!='m';if(t=='t'||t=='l')R(1)}
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>tabTo(b.dataset.t));
+const setMu=v=>{muted=v;ls.set('tm_mute',muted);$('#mu').textContent=muted?'🔇':'🔊';if(mg)mg.gain.value=muted?0:.72;side()};
+const setMus=v=>{musicOn=v;ls.set('tm_music',v);$('#mmu').textContent=v?'🎵':'🔕';if(mb)mb.gain.setTargetAtTime(v?mvol:0,ac.currentTime,.3);if(v&&!pa&&ac&&!musFail)nextTrack();else if(pa){v?pa.play().catch(()=>{}):pa.pause()}side()};
+$('#mu').onclick=()=>{au();setMu(!muted)};$('#mmu').onclick=()=>{au();setMus(!musicOn)};$('#mu').textContent=muted?'🔇':'🔊';$('#mmu').textContent=musicOn?'🎵':'🔕';
+$('#sr').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;au();const a=b.dataset.s;if(a=='mus')setMus(!musicOn);else if(a=='fx')setMu(!muted);});
+$('#sr').addEventListener('input',e=>{if(e.target.id!='mvol')return;mvol=e.target.value/100;ls.set('tm_mvol',mvol);if(mb)mb.gain.value=musicOn?mvol:0;if(pa)pa.volume=mvol});
+document.addEventListener('pointerdown',e=>{au();if(e.target.closest('button')){sfx.click();burst(e.clientX,e.clientY,12);const q=document.createElement('i');q.className='rip';q.style.left=e.clientX+'px';q.style.top=e.clientY+'px';document.body.appendChild(q);setTimeout(()=>q.remove(),520);navigator.vibrate&&navigator.vibrate(8)}});
+let pMoveRAF=0,lastPX=0,lastPY=0;addEventListener('pointermove',e=>{lastPX=e.clientX;lastPY=e.clientY;if(pMoveRAF)return;pMoveRAF=requestAnimationFrame(()=>{pMoveRAF=0;if(Math.random()<.45&&ps.length<55){sp(lastPX,lastPY,0,PC.c[0]);ps[ps.length-1].l=32}})});
+let hb=null;$('#tw').addEventListener('pointerover',e=>{const b=e.target.closest('[data-k]');if(b&&b!=hb){hb=b;MC.hover(300+(+b.dataset.k%12)*30)}});
+let lastD=0,combo=0;
+function celebrate(f,x,y){const n=Date.now();combo=n-lastD<5000?combo+1:1;lastD=n;const c=[f.c,mix(f.c,'#fff',.5),'#ffd25a','#fff'];
+[0,1,2,3].forEach(i=>setTimeout(()=>MC.note(523*Math.pow(1.122,i*2+combo)),i*90));sfx.chime();sfx.coin();MC.xp();setTimeout(MC.levelup,140);burst(x,y,90,c);orbs(x,y,14);if(done.size%5==0&&done.size<F.length){pop(innerWidth/2,innerHeight/3,'⭐ ¡'+done.size+' pisos!');MC.levelup();[0,1,2,3].forEach(i=>setTimeout(()=>fw(innerWidth*Math.random(),innerHeight*.4*Math.random()+40,c),i*200))}
+[250,500,750].forEach(t=>setTimeout(()=>fw(innerWidth*Math.random(),innerHeight*.4*Math.random()+40,c),t));fxFlash(f.c);shake();pop(x,y,'+1 piso ✓'+(combo>1?' · combo ×'+combo:''));
+const els=[...document.querySelectorAll(vw=='r'?'#tw2 .fl':'#tw .fl')],ix=els.findIndex(e=>+e.dataset.k==f.i);els.forEach((el,j)=>{el.style.setProperty('--wd',Math.abs(j-ix)*50+'ms');el.classList.add('wv')});
+if(done.size==F.length)setTimeout(()=>{sfx.win();for(let i=0;i<7;i++)setTimeout(()=>fw(innerWidth*Math.random(),innerHeight*.5*Math.random()+40,c),i*250);pop(innerWidth/2,innerHeight/2,'🏰 ¡TORRE COMPLETA!')},600)}
+// Emojis contextuales de la ruleta
+const EMOJI={"Roble clásico":"🌳","Sakura":"🌸","Océano":"🐠","Nether":"🔥","Deep Dark":"🫀","End":"🌌","Jungla":"🌴","Desierto":"🏜️","Hielo":"🧊","Amatista":"🔮","Cobre":"🔶","Redstone":"🔴","Dripstone":"🪨","Manglar":"🌿","Bambú":"🎋","Bosque oscuro":"🌲","Badlands":"⛏️","Biblioteca":"📚","Colmenas":"🐝","Minerales":"💎","Bosque moteado":"🍂","Cuevas de azufre":"🟡","Bosque distorsionado":"🟢","Valle de almas":"💀","Deltas de basalto":"🌋","Jardín pálido":"🤍","Cuevas frondosas":"🌱","Sabana":"🦒","Taiga":"🐺","Campos de setas":"🍄","Ciudad del End":"🏙️"};
+// ===== Ruleta =====
+let spinning=false;
+function spin(){
+  if(spinning)return;
+  au();syncBuildOrder();const pool=F.filter(f=>!buildOrder.includes(f.i));
+  if(!pool.length){$('#res').innerHTML='<div class="resultCard"><h2>🏰 Torre completa</h2><p style="margin:0;color:var(--mu)">Ya has colocado todos los pisos disponibles. No hay repeticiones.</p></div>';sfx.win();renderRouletteTower();return}
+  spinning=true;sfx.whoosh();shake();const st=$('#st2'),w=$('#trk').clientWidth,win=pool[Math.floor(Math.random()*pool.length)],WI=54,step=150;
+  const filler=pool.filter(f=>f.i!==win.i);let h='';
+  for(let i=0;i<70;i++){
+    if(i===WI){h+='<div class="rc spinning mystery" data-slot="win" style="--c:#565d68;--t:#fff"><span style="font-size:26px">❔</span><b>???</b><small>RESULTADO OCULTO</small></div>'}
+    else{const f=(filler.length?filler:pool)[Math.floor(Math.random()*(filler.length?filler.length:pool.length))];h+=`<div class="rc spinning" data-id="${f.i}" style="--c:${f.c};--t:${tc(f.c)}"><span style="font-size:26px">${EMOJI[f.n]||'🏗️'}</span>${f.n}<small>${DIM[f.d]}</small></div>`}
+  }
+  st.style.transition='none';st.style.transform='translateX(0)';st.innerHTML=h;$('#res').innerHTML='';st.offsetWidth;const tx=-(WI*step+70-w/2+(Math.random()-.5)*35);st.style.transition='transform 7s cubic-bezier(.06,.78,.11,1)';st.style.transform=`translateX(${tx}px)`;
+  let last=-1;const T=()=>{if(!spinning)return;const m=new DOMMatrix(getComputedStyle(st).transform).m41,i=Math.max(0,Math.min(69,Math.floor((w/2-m)/step)));if(i!==last){last=i;MC.tick(1+(i%9)*.077)}requestAnimationFrame(T)};T();
+  setTimeout(()=>{
+    spinning=false;
+    const card=st.children[WI];
+    if(card){card.classList.remove('spinning','mystery');card.dataset.id=win.i;card.style.setProperty('--c',win.c);card.style.setProperty('--t',tc(win.c));card.innerHTML=`<span style="font-size:26px">${EMOJI[win.n]||'🏗️'}</span>${win.n}<small>${DIM[win.d]}</small>`;card.classList.add('win')}
+    setDim(win.d,win.c);playBiomeSound(win,'select');biomeFx(win);MC.levelup();
+    const r=$('#trk').getBoundingClientRect();burst(r.left+w/2,r.top+82,110,[win.c,'#ffd25a','#fff']);fxFlash(win.c);
+    for(let j=0;j<6;j++)setTimeout(()=>fw(r.left+w*Math.random(),r.top-40*Math.random(),[win.c,'#ffd25a','#fff']),j*170);
+    $('#res').innerHTML=`<div class="resultCard"><h2>¡Te toca: ${win.n}!</h2><div class="resultActions"><button class="accept" data-r="a">✅ Sí, puedo hacerlo</button><button data-r="v">👁️ Ver plano</button><button data-r="r">🔁 Reroll</button></div></div>`;$('#res').dataset.k=win.i;
+  },7100)
+}
+$('#spin').onclick=spin;
+$('#res').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const id=+$('#res').dataset.k;if(b.dataset.r==='r'){if(!spinning)spin()}else if(b.dataset.r==='v'){open(id)}else if(b.dataset.r==='a'){acceptRoulette(id)}else if(b.dataset.r==='t'){tabTo('l')}};
+sndPreload();
+syncBuildOrder();R(1);
+</script></body></html>
