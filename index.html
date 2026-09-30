@@ -585,7 +585,7 @@ syncBuildOrder();R(1);
 
 /* ===== v8: efectos de piso, hitos, materiales ===== */
 SND.endportal=['block/end_portal/endportal.ogg'];
-$('#ml').addEventListener('click',e=>{const c=e.target.closest('.mc');if(!c)return;matSfx(c.dataset.mk);c.classList.remove('tap');void c.offsetWidth;c.classList.add('tap')});
+$('#ml').addEventListener('click',e=>{const c=e.target.closest('.mc');if(!c)return;c.classList.remove('tap');void c.offsetWidth;c.classList.add('tap')});
 const V8={q:[],on:0},RGBC={},ra=(c,a)=>{let q=RGBC[c];if(!q)q=RGBC[c]=c[0]=='r'?c.match(/\d+/g).map(Number):rgb(c);a=a<0?0:a>1?1:a;return 'rgba('+q[0]+','+q[1]+','+q[2]+','+(Math.round(a*100)/100)+')'};
 const RM=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
 function v8add(fn){if(RM())return;if(!V8.cv){const c=V8.cv=document.createElement('canvas');c.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:65;will-change:transform;transform:translateZ(0)';document.body.appendChild(c);V8.x=c.getContext('2d');const r=()=>{c.width=innerWidth;c.height=innerHeight};r();addEventListener('resize',r)}
@@ -1087,15 +1087,15 @@ let ZK=0;{const _v=v8add;v8add=function(fn){if(!ZK&&V8.q.length>30)return;_v(fn)
 let ZB=0;const ZD={25:9500,50:12500,75:15500,100:27500};
 function toast(t,ic){let h=document.getElementById('zto');if(!h){h=document.createElement('div');h.id='zto';document.body.appendChild(h)}const e=document.createElement('div');e.className='zt2';e.innerHTML='<i>'+(ic||'✨')+'</i><span>'+t+'</span>';h.appendChild(e);while(h.children.length>3)h.firstChild.remove();setTimeout(()=>e.classList.add('out'),2600);setTimeout(()=>e.remove(),3200)}
 /* --- explosión de material --- */
-function matBoom(card){const k=card.dataset.mk;if(!M[k]||card._bm)return;card._bm=1;tex(k);
+function matBoom(card){const k=card.dataset.mk;if(!M[k]||card._bm)return;card._bm=1;tex(k);matPlay(k);card.classList.add('snd');setTimeout(()=>card.classList.remove('snd'),1400);
  const im=TV[k],col=M[k][1],col2=M[k][2]||col,r=card.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,Z=VSC(),G=Math.max(.55,Z),W=innerWidth,H=innerHeight,busy=V8.q.length>3,
   pal=[col,col2,'#ffd25a','#ffffff'],cards=[...document.querySelectorAll('#ml .mc')].filter(e=>e!==card&&!e.hidden);
  hap([10,20,10,20,10,20,40],1);card.style.zIndex=6;
  card.animate([{transform:'scale(1)',filter:'none'},{transform:'translate(-3px,1px) scale(1.07)',offset:.2},{transform:'translate(3px,-2px) scale(1.14)',offset:.4},{transform:'translate(-4px,2px) scale(1.24)',filter:'brightness(1.6)',offset:.6},{transform:'translate(4px,-2px) scale(1.36)',filter:'brightness(2.2)',offset:.8},{transform:'scale(1.55)',filter:'brightness(3.4) saturate(0)'}],{duration:480,easing:'ease-in'});
- [0,150,290,400].forEach((t,i)=>T_(t,()=>MC.tick(.8+i*.25)));
+ 
  T_(470,()=>{
-  fxFlash(col);quake(460,9);punch(1.025,320);MC.firework();splay('anvil',{rate:1.5,vol:.5});bk('b_',matType(k));pop(cx,cy-30,'💥 '+M[k][0]);hap([50,25,90,20,40],1);
-  arp([392,523,659],60,110);
+  fxFlash(col);quake(460,9);punch(1.025,320);pop(cx,cy-30,'💥 '+M[k][0]);hap([50,25,90,20,40],1);
+  
   card.animate([{opacity:0,transform:'scale(.1)'},{opacity:0,transform:'scale(.1)',offset:.55},{opacity:1,transform:'scale(1.3) rotate(-6deg)',offset:.82},{opacity:1,transform:'scale(1)'}],{duration:1500,fill:'backwards'});
   const D=Math.hypot(W,H);
   cards.forEach(e=>{const q=e.getBoundingClientRect();if(q.bottom<-320||q.top>H+320)return;const dx=q.left+q.width/2-cx,dy=q.top+q.height/2-cy,d=Math.hypot(dx,dy)||1,f=Math.max(.15,1-d/(D*.5)),m=(40+280*f)*Z,px=dx/d*m,py=dy/d*m,rot=(Math.random()<.5?-1:1)*(10+42*f);
@@ -1103,24 +1103,24 @@ function matBoom(card){const k=card.dataset.mk;if(!M[k]||card._bm)return;card._b
   /* trozos del bloque: salen disparados, caen por toda la pantalla y rebotan */
   const n=(NARROW()?56:104)-(busy?30:0),P=Array.from({length:n},()=>{const a=rr(-Math.PI,Math.PI),v=rr(300,1500)*Z;return{x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v-320*Z,s:rr(12,38)*Math.max(.7,Z),a:rr(0,6),va:rr(-12,12),b:0,l:rr(2.8,3.6)}});
   for(let i=0;i<(NARROW()?20:40)-(busy?15:0);i++)P.push({x:rr(0,W),y:-rr(20,H*.75),vx:rr(-80,80),vy:rr(0,220),s:rr(12,34)*Math.max(.7,Z),a:rr(0,6),va:rr(-6,6),b:0,l:rr(3.2,4.2)});
-  let sn=0,ls=0;
+  let sn=0,ls=0;const B0=MB;
   v8add((x,t,dt)=>{if(t>4.6)return false;x.imageSmoothingEnabled=false;x.globalCompositeOperation='source-over';
    P.forEach(p=>{p.l-=dt;if(p.l<=0)return;p.vy+=1700*G*dt;p.vx*=1-.3*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.a+=p.va*dt;
     if(p.x<p.s/2||p.x>W-p.s/2){p.vx*=-.7;p.x=Math.max(p.s/2,Math.min(W-p.s/2,p.x))}
-    if(p.y>H-p.s/2&&p.vy>0){p.y=H-p.s/2;if(p.b<3){p.vy*=-.5;p.vx*=.8;p.b++;p.va*=.6;if(p.b==1&&sn<9&&t-ls>.08){sn++;ls=t;bk('p_',matType(k))}}else{p.vy=0;p.vx*=.9;p.va=0}}
+    if(p.y>H-p.s/2&&p.vy>0){p.y=H-p.s/2;if(p.b<3){p.vy*=-.5;p.vx*=.8;p.b++;p.va*=.6;if(p.b==1&&sn<2&&t-ls>.25){sn++;ls=t;bk('p_',matType(k),B0)}}else{p.vy=0;p.vx*=.9;p.va=0}}
     x.globalAlpha=Math.min(1,p.l/.9);x.save();x.translate(p.x,p.y);x.rotate(p.a);x.drawImage(im,-p.s/2,-p.s/2,p.s,p.s);x.restore()});x.globalAlpha=1});
   /* fantasma gigante, ondas y chispas */
   v8add((x,t)=>{if(t>.9)return false;const u=t/.9,s=(60+520*u)*Z;x.imageSmoothingEnabled=false;x.globalAlpha=.5*(1-u);x.drawImage(im,cx-s/2,cy-s/2,s,s)});
   ringAt(cx,cy,col);T_(120,()=>ringAt(cx,cy,'#ffffff'));wave(col,1,Math.max(W,H)*.7);
   v8add(pbx(NARROW()?60:110,i=>{const a=rr(0,6.283),v=rr(300,1300)*Z;return{x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:rr(1.8,4.5),c:CL(pal,i)}},(p,dt)=>{p.vx*=1-1.8*dt;p.vy=p.vy*(1-1.8*dt)+500*G*dt;p.x+=p.vx*dt;p.y+=p.vy*dt},(g,p,k2)=>{dot(g,p.x,p.y,p.s,ra(p.c,k2));g.strokeStyle=ra(p.c,k2*.5);g.lineWidth=p.s*.8;g.beginPath();g.moveTo(p.x,p.y);g.lineTo(p.x-p.vx*.03,p.y-p.vy*.03);g.stroke()},1.8));
-  T_(1350,()=>{MC.pickup();MC.note(660);ringAt(cx,cy,col);burst(cx,cy,26,pal)});
+  T_(1350,()=>{ringAt(cx,cy,col);burst(cx,cy,26,pal)});
   T_(1520,()=>{card._bm=0;card.style.zIndex=''})})}
 $('#ml').addEventListener('click',e=>{const c=e.target.closest('.mc');if(c)matBoom(c)});
 $('#ml').addEventListener('pointermove',e=>{if(e.pointerType!='mouse')return;const c=e.target.closest('.mc');if(!c||c._bm)return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(500px) rotateY(${x*18}deg) rotateX(${-y*18}deg) scale(1.05)`});
 $('#ml').addEventListener('pointerout',e=>{const c=e.target.closest('.mc');if(c&&!c.contains(e.relatedTarget))c.style.transform=''});
-$('#ml').addEventListener('pointerover',e=>{if(e.pointerType!='mouse')return;const c=e.target.closest('.mc');if(c&&!c.contains(e.relatedTarget))MC.hover(380+(([...c.parentNode.children].indexOf(c))%10)*35)});
+$('#ml').addEventListener('pointerover',e=>{if(e.pointerType!='mouse')return;const c=e.target.closest('.mc');if(c&&!c.contains(e.relatedTarget)){}});
 /* buscador de materiales */
-$('#ml').insertAdjacentHTML('beforebegin','<div class="zms"><input id="zq" type="search" placeholder="Buscar material…" autocomplete="off"><span id="zqc"></span></div><div class="zhn">💥 Toca un material: explota y todos los demás salen volando</div>');
+$('#ml').insertAdjacentHTML('beforebegin','<div class="zms"><input id="zq" type="search" placeholder="Buscar material…" autocomplete="off"><span id="zqc"></span></div>');
 function zFilter(){const q=($('#zq').value||'').trim().toLowerCase(),cs=[...document.querySelectorAll('#ml .mc')];let v=0;cs.forEach(c=>{const m=!q||c.textContent.toLowerCase().includes(q);c.hidden=!m;if(m)v++});$('#zqc').textContent=v+' de '+cs.length+' materiales'}
 $('#zq').addEventListener('input',()=>{zFilter();MC.tick(1.5)});{const _m=matsAll;matsAll=function(){_m();zFilter()}}zFilter();
 /* --- cinemática: la torre real se construye en pantalla --- */
@@ -1175,5 +1175,65 @@ addEventListener('keydown',e=>{if(e.code!='Space'||!$('#rt').classList.contains(
 {const _t=tabTo;tabTo=function(t){_t(t);if(t=='l'||t=='t'){const rows=[...document.querySelectorAll((t=='l'?'#tw2':'#tw')+' .fl')].reverse().slice(0,30);rows.forEach((el,j)=>T_(380+j*45,()=>{el.classList.add('flash2');T_(750,()=>el.classList.remove('flash2'));if(j<16)MC.tick(1+j*.06)}))}}}
 /* destellos suaves en los pisos construidos */
 setInterval(()=>{if(document.hidden||document.body.classList.contains('apoc')||RM()||fq.length>40)return;const rs=[...document.querySelectorAll('.fl.dn')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.top>60&&r.bottom<innerHeight});if(!rs.length)return;const r=rs[Math.floor(Math.random()*rs.length)].getBoundingClientRect();fxAdd({ch:'✨',s:rr(14,22),x:r.left+rr(20,r.width-20),y:r.top+rr(4,r.height-4),vy:-rr(.4,1),sw:.6,l:44})},1100);
+</script>
+<style id="zq3">
+/* materiales v2 */
+#ml .mc{position:relative;overflow:hidden;--mc:#7fb0ff;animation:mcIn .6s cubic-bezier(.2,1.4,.3,1) both;transition:transform .2s,box-shadow .3s,border-color .3s}
+@keyframes mcIn{from{opacity:0;transform:translateY(26px) scale(.86) rotate(-2deg)}}
+#ml .mc:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,color-mix(in srgb,var(--mc) 45%,#fff) 50%,transparent 70%);opacity:.35;transform:translateX(-130%);pointer-events:none}
+#ml .mc:hover{border-color:var(--mc);box-shadow:0 12px 32px color-mix(in srgb,var(--mc) 45%,transparent)}
+#ml .mc:hover:before{transform:translateX(130%);transition:transform .7s}
+#ml .mc img{animation:mcFl 3.4s ease-in-out infinite;animation-delay:calc(var(--ix,0)*90ms);filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+@keyframes mcFl{50%{transform:translateY(-3px) rotate(3deg)}}
+#ml .mc:hover img{animation:none}
+#ml .mc.snd:after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;border-radius:50%;border:3px solid var(--mc);transform:translate(-50%,-50%);animation:mcWv 1s ease-out 2;pointer-events:none}
+@keyframes mcWv{from{opacity:.9;transform:translate(-50%,-50%) scale(1)}to{opacity:0;transform:translate(-50%,-50%) scale(14)}}
+#ml .mc.snd{border-color:var(--mc);box-shadow:0 0 0 3px color-mix(in srgb,var(--mc) 35%,transparent),0 0 30px var(--mc)}
+/* frase de piso */
+#qt{position:fixed;left:50%;bottom:calc(9% + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:140;width:min(560px,92vw);cursor:pointer;-webkit-tap-highlight-color:transparent}
+#qt .qb{position:relative;overflow:hidden;padding:20px 24px 22px;border-radius:18px;text-align:center;color:#fff;background:linear-gradient(160deg,color-mix(in srgb,var(--g) 38%,#12151c),#0a0c12);border:2px solid var(--g);box-shadow:0 0 0 4px rgba(0,0,0,.35),0 0 44px var(--g),0 20px 60px rgba(0,0,0,.6);animation:qIn .8s cubic-bezier(.2,1.5,.3,1) both}
+#qt.out .qb{animation:qOut .6s ease-in both}
+@keyframes qIn{0%{opacity:0;transform:translateY(80px) scale(.6) rotate(-3deg)}60%{transform:translateY(-8px) scale(1.04)}}
+@keyframes qOut{to{opacity:0;transform:translateY(40px) scale(.9);filter:blur(6px)}}
+#qt .qb:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(-120%);animation:qSh 1.2s .5s ease-out forwards;pointer-events:none}
+@keyframes qSh{to{transform:translateX(120%)}}
+#qt .qk{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:3px 12px;border-radius:99px;background:var(--g);color:#111;margin-bottom:10px;animation:qPop .6s .3s both}
+#qt .qi{display:block;font-size:44px;line-height:1;margin-bottom:6px;animation:mgIc 1s cubic-bezier(.2,1.7,.4,1) both,mgFl 2.6s ease-in-out 1s infinite;filter:drop-shadow(0 0 16px var(--g))}
+#qt .qx{font-size:clamp(17px,4.4vw,23px);font-weight:700;line-height:1.35;min-height:2.7em;text-shadow:0 2px 10px #000}
+#qt .qx:after{content:"▌";margin-left:2px;color:var(--g);animation:qBl .5s steps(2) infinite}#qt.done .qx:after{display:none}
+@keyframes qBl{50%{opacity:0}}@keyframes qPop{from{opacity:0;transform:scale(.4)}}
+#qt .qa{margin-top:8px;font-size:13px;color:color-mix(in srgb,var(--g) 60%,#fff);opacity:0;transition:opacity .5s}#qt.done .qa{opacity:1}
+#qt .qp{position:absolute;bottom:-20px;font-size:20px;opacity:0;pointer-events:none;animation:qFly var(--d) linear var(--w) infinite}
+@keyframes qFly{0%{opacity:0;transform:translateY(0) rotate(0)}15%{opacity:.85}100%{opacity:0;transform:translateY(-190px) rotate(var(--r))}}
+#qt .qt2{position:absolute;left:0;bottom:0;height:4px;background:var(--g);box-shadow:0 0 12px var(--g);animation:qTm var(--t) linear both}@keyframes qTm{from{width:100%}to{width:0}}
+</style>
+<script>
+/* ===== v15: materiales con un solo sonido + frases al completar piso ===== */
+let MB=null,mDuck=0;
+function matPlay(k){au();if(!ac||muted)return;const n=ac.currentTime,t=matType(k);
+ if(MB){try{MB.gain.cancelScheduledValues(n);MB.gain.setValueAtTime(MB.gain.value,n);MB.gain.linearRampToValueAtTime(0,n+.06)}catch(e){}}
+ const g=ac.createGain();g.gain.value=1;g.connect(mg);MB=g;delete SLAST['b_'+t];delete SLAST['p_'+t];bk('b_',t,g);
+ if(mb&&musicOn){mb.gain.cancelScheduledValues(n);mb.gain.setTargetAtTime(mV()*.2,n,.04);clearTimeout(mDuck);mDuck=setTimeout(()=>{try{mb.gain.setTargetAtTime(musicOn?mV():0,ac.currentTime,.4)}catch(e){}},1300)}}
+{const _m=matsAll;matsAll=function(){_m();document.querySelectorAll('#ml .mc').forEach((c,i)=>{c.style.setProperty('--ix',i%12);const m=M[c.dataset.mk];if(m)c.style.setProperty('--mc',m[1])})}}matsAll();
+const QF={"Roble clásico":"Las gallinas no reciben daño por caída: pueden bajar de cualquier altura.","Sakura":"Los cerezos y sus pétalos llegaron con la versión 1.20 de Minecraft.","Océano":"Los delfines te dan velocidad extra si nadas cerca de ellos.","Nether":"Dormir en el Nether hace que la cama explote.","Deep Dark":"El Warden no ve: se guía por las vibraciones y el olfato.","End":"Mirar a los ojos a un Enderman lo enfurece; una calabaza en la cabeza lo evita.","Jungla":"Los creepers huyen de los ocelotes y de los gatos.","Desierto":"Bajo la placa de presión de los templos del desierto hay TNT escondido.","Hielo":"El hielo azul es el bloque más resbaladizo del juego.","Amatista":"Las geodas de amatista están envueltas en calcita y basalto liso.","Cobre":"El cobre se oxida con el tiempo, y una gota de cera (panal) detiene el proceso.","Redstone":"El observador detecta cualquier cambio del bloque que tiene delante.","Dripstone":"Una estalactita puntiaguda hace daño extra si te cae encima.","Manglar":"Las ranas comen slimes pequeños y sueltan luces de rana.","Bambú":"Los pandas bebé estornudan y pueden soltar una bola de slime.","Bosque oscuro":"Las mansiones solo aparecen en el bosque oscuro; los evocadores sueltan Tótems de inmortalidad.","Badlands":"Las Badlands tienen más menas de oro que cualquier otro bioma.","Biblioteca":"Necesitas 15 estanterías alrededor de una mesa de encantamientos para el nivel máximo.","Colmenas":"Una abeja muere después de picar; solo pica una vez.","Minerales":"Desde la 1.18, los diamantes abundan más cerca de la capa 59 bajo cero.","Bosque moteado":"Las hojas se vuelven naranjas en otoño porque la clorofila desaparece y quedan los carotenoides.","Cuevas de azufre":"El azufre puro es amarillo y se forma en volcanes y fuentes termales.","Bosque distorsionado":"Es el bioma del Nether con más Endermen.","Valle de almas":"La arena de almas ralentiza al caminar y sus antorchas arden en azul.","Deltas de basalto":"El bloque de magma quema al pisarlo, salvo que vayas agachado o con Paso helado.","Jardín pálido":"El Creaking se queda inmóvil mientras lo miras.","Cuevas frondosas":"Las bayas luminosas alumbran el entorno y también se pueden comer.","Sabana":"En la sabana viven llamas y caballos; a un caballo se le doma montándolo varias veces.","Taiga":"Los zorros de la taiga recogen bayas dulces del suelo.","Campos de setas":"Es el único bioma donde no aparecen mobs hostiles de forma natural.","Ciudad del End":"Los élitros solo se consiguen en los barcos de la Ciudad del End."};
+const QQ=[["Todo es mejor con amigos.","💛","TikTok"],["Me dejaste atrás, pero seguí brillando por si algún día volvías.","🔦","La antorcha · TikTok"],["No borres tu mundo por un mal momento.","🌍","Mojang, según TikTok"],["No puedes elegir dónde empiezas, pero sí dónde terminas.","🧭","Minecraft, según TikTok"],["¿Alguien realmente lee esto?","👀","Mojang, según TikTok"],["No explores una mina ya explorada.","⛏️","Comentarios de TikTok"],["Por malo que sea el presagio, siempre puedes ser el héroe de la aldea.","🛡️","Comentarios de TikTok"],["No dejes árboles flotando.","🌳","Mojang, según TikTok"],["Entre más bella la espada, más daño te hará.","🗡️","Mojang, según TikTok"],["Entre más alto estés, mayor será el daño de caída.","🪂","Minecraft, según TikTok"],["Hasta lo más inútil es valioso.","💚","Comentarios de TikTok"],["Para llegar al final, primero hay que atravesar un infierno.","🔥","TikTok"],["Nunca es tarde para recordarte cuánto te amo.","💌","TikTok"],["Te guardaré en mi corazón… siempre.","❤️","TikTok"],["Daría todo de mí, solo por ti.","🥀","TikTok"],["En un mundo de ruido, tu voz es la melodía que anhelo.","🎵","TikTok"]];
+let QS=ls.get('tm_qs2')||{f:[],q:[]},QT=null,QTI=null;
+function pickQ(f){const F0=QF[f.n];
+ if(F0&&!QS.f.includes(f.n)&&Math.random()<.3){QS.f.push(f.n);ls.set('tm_qs2',QS);return{k:'fact',t:F0,i:EMOJI[f.n]||'💡',a:'Curiosidad real · '+f.n}}
+ let pool=QQ.map((_,i)=>i).filter(i=>!QS.q.includes(i));if(!pool.length){QS.q=[];pool=QQ.map((_,i)=>i)}
+ const i=pool[Math.floor(Math.random()*pool.length)];QS.q.push(i);ls.set('tm_qs2',QS);const q=QQ[i];return{k:'quote',t:q[0],i:q[1],a:'— '+q[2]}}
+function qClose(){if(!QT)return;const e=QT;QT=null;clearTimeout(QTI);e.classList.add('out');setTimeout(()=>e.remove(),650)}
+function showQuote(f){qClose();const q=pickQ(f),rm=RM(),len=q.t.length,dur=4200+len*55,e=document.createElement('div');e.id='qt';
+ e.style.setProperty('--g',f.c);e.style.setProperty('--t',dur+'ms');
+ const ps=rm?'':Array.from({length:10},(_,i)=>`<span class="qp" style="left:${5+i*10}%;--d:${2.4+(i%4)*.5}s;--w:${(i*.27)%2}s;--r:${(i%2?1:-1)*(20+i*8)}deg">${EMOJI[f.n]||q.i}</span>`).join('');
+ e.innerHTML=`<div class="qb">${ps}<span class="qk">${q.k=='fact'?'💡 ¿Sabías que…?':'💬 Frase de TikTok'}</span><span class="qi">${q.i}</span><div class="qx"></div><div class="qa">${q.a}</div><i class="qt2"></i></div>`;
+ document.body.appendChild(e);QT=e;e.onclick=qClose;
+ const x=e.querySelector('.qx'),r=e.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+ au();q.k=='fact'?(splay('book',{vol:.7}),setTimeout(()=>splay('magic',{vol:.5}),160)):(splay('pling',{vol:.7}),setTimeout(()=>MC.note(784),140));
+ if(!rm){burst(cx,cy,70,[f.c,mix(f.c,'#fff',.5),'#ffd25a','#fff']);ringAt(cx,cy,f.c);T_(150,()=>ringAt(cx,cy,'#fff'));fw(cx,Math.max(60,cy-120),[f.c,'#ffd25a','#fff'])}
+ let n=0;const st=Math.max(18,Math.min(45,1500/len)),iv=setInterval(()=>{if(QT!==e){clearInterval(iv);return}n++;x.textContent=q.t.slice(0,n);if(n%3==0)splay('tick',{rate:1.5+Math.random()*.4,vol:.1});
+  if(n>=len){clearInterval(iv);e.classList.add('done');if(!rm)burst(cx,cy,30,[f.c,'#ffd25a']);MC.xp()}},st);
+ QTI=setTimeout(qClose,dur+700)}
+$('#dg').addEventListener('change',e=>{if(e.target.id!='dn'||!e.target.checked||typeof cur!='number'||!F[cur])return;const f=F[cur];setTimeout(()=>showQuote(f),650)});
 </script>
 </body></html>
